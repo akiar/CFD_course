@@ -1,0 +1,60 @@
+{
+  "Root":{
+    "Files":[{
+        "filename":".\\nestedLoop.f",
+        "enabled":"1"
+      }],
+    "Name":"+fortran_practice (target.exe)",
+    "Folders":[]
+  },
+  "Name":"fortran_practice (target.exe)",
+  "Options":{
+    "Compiler Options":{
+      "Link Flags":"",
+      "C Flags":"",
+      "Fortran Flags":""
+    },
+    "Revision":2,
+    "Fortran Options":{
+      "Cray Pointers":"false",
+      "Runtime Diagnostics":"false",
+      "Enable OpenMP":"false",
+      "Use C Preprocessor":"false",
+      "Default Double for Real":"false"
+    },
+    "Code Generation Options":{
+      "Debugging":"true",
+      "Profiling":"false",
+      "Optimization Mode":0,
+      "Aggressive Loops":"false",
+      "Processor":"generic",
+      "CPU Specific":"false"
+    },
+    "Launch Options":{
+      "Command Line Arguments":"",
+      "External Console":"false",
+      "Keep Console":"true",
+      "Build Before Launch":"true",
+      "Executable":"",
+      "Working Directory":""
+    },
+    "Build Options":{
+      "Makefile":"Makefile",
+      "Auto Makefile":"true"
+    },
+    "Type":0,
+    "Build Dependencies":1,
+    "Linker Options":{
+      "Static Linking Mode":7
+    },
+    "Target":"target.exe",
+    "Architecture":0,
+    "Windows GUI":0,
+    "File Options":{
+      "Module Directory":"modules",
+      "Library Directories":["Default Library Directory","Default Add-On Directory"],
+      "Build Directory":"build",
+      "Include Directories":["Default Include Directory","Default Add-On Include Directory"]
+    }
+  }
+}
