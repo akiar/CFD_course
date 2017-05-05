@@ -49,7 +49,7 @@
       ATW(IE+1) = 0
       ATE(IE+1) = 0
       ATP(IE+1) = 1
-      BT(IE+1) = 30 + 273.15
+      BT(IE+1) = 0 + 273.15
 *     
       RETURN
       END
