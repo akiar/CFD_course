@@ -19,10 +19,13 @@
 *
 ***********************************************************************
 *
+*     Variable Declaration
+*
       REAL RSD(ID),SUMRSD,AVRSD
       REAL PHI(ID),AP(ID),AW(ID),AE(ID),B(ID)
       INTEGER IB,IE
 *
-*
+
+      
       RETURN
       END

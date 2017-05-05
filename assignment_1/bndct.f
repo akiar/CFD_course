@@ -17,8 +17,39 @@
 *
 ***********************************************************************
 *
-      REAL
-      INTEGER
+*     Variable Declaration
 *
+      REAL ATP(ID),ATW(ID),ATE(ID),BT(ID)
+      INTEGER IB,IE,ID
+*
+***********************************************************************
+*
+*     Boundary Condition Calculations
+*     Set coefficients for Dirichlet, Neuman, and Robin conditions
+*      
+*     Beginning Node
+*
+*     Dirichlet:  AW = 0, AE = 0, AP = 1, BP = Tspec
+*     Neumann:    AW = 0, AE = 1, AP = 1, BP = Qspec/DE(IB-1)
+*     Robin:      AW = 0, AE = DE(IB-1), AP = HCONV*ARE(IB-1) + DE(IB-1),
+*                         BP = HCONV*ARE(IB-1)*TINFC
+*                         
+      ATW(IB-1) = 0
+      ATE(IB-1) = 0
+      ATP(IB-1) = 1
+      BT(IB-1) = 100 !+273.15
+*
+*     End Node
+*
+*     Dirichlet:  AW = 0, AE = 0, AP = 1, BP = Tspec
+*     Neumann:    AW = 1, AE = 0, AP = 1, BP = -Qspec/DE(IE)
+*     Robin:      AW = 0, AE = DE(IE),  AP = HCONV*ARE(IE) + DE(IE),
+*                         BP = HCONV*ARE(IB-1)*TINFC
+*
+      ATW(IE+1) = 0
+      ATE(IE+1) = 0
+      ATP(IE+1) = 1
+      BT(IE+1) = 100 !+273.15
+*     
       RETURN
       END

@@ -18,9 +18,27 @@
 *           absolute!!!
 *
 ******************************************************************
+*     Variable Declaration
+      REAL T(ID),VOLP(ID),ARO(ID),    ! Inputs
+     C     HCONV,TINFC,               ! Inputs
+     C     QT(ID),RT(ID)              ! Outputs
+      INTEGER IB,IE,ID,               ! Inputs
+     C        I                       ! loop integer
+******************************************************************
+*     Source term calculation
 *
-      REAL
-      INTEGER
-* 
+      IF (HCONV .NE. 0) THEN
+          DO 10 I=IB,IE
+              QT(I) = HCONV * ARO(I) / TINFC
+              RT(I) = -HCONV * ARO(I)
+   10     CONTINUE
+*
+      ELSE
+          DO 20 I = IB,IE
+              QT(I) = 0
+              RT(I) = 0
+   20     CONTINUE
+      END IF
+      
       RETURN
       END

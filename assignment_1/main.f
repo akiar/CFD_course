@@ -13,7 +13,7 @@
 *  Declaration of Variables
 *============================
 *
-      PARAMETER(ID=120)
+      PARAMETER(ID=65)
       REAL YNE(ID),ZUE(ID),XP(ID),XE(ID)
       REAL DIEP(ID),DISW(ID),DISE(ID),DSXY(ID),DSXZ(ID)
       REAL AREP(ID),ARO(ID),VOLP(ID)
@@ -81,7 +81,7 @@
 *--Compute active coefficients for T
 *
         CALL NULL(BT, IB,IE,ID)
-        CALL DIFPHI(DE, COND,AREP,DIEP,IB,IE,ID)
+        CALL DIFPHI(DE,COND,AREP,DIEP,IB,IE,ID)
         CALL SRCT(QT,RT, T,VOLP,ARO,HCONV,TINF,IB,IE,ID)
         CALL COEFF(ATP,ATW,ATE,BT,
      C             DE,QT,RT,VOLP,RHO,CP,
@@ -108,7 +108,7 @@
 *--Print final solution
 *
         CALL OUT1D(T  , ' T      ',IDATO,IB-1, IE+1,1,ID)
-*
+        
 *--Save result to unformatted output file
 *
       CALL SAVE(T,IRSO,IB,IE,ID)
