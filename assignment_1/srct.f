@@ -27,7 +27,7 @@
 ******************************************************************
 *     Source term calculation
 *
-      IF (HCONV .NE. 0) THEN
+      IF (HCONV /= 0) THEN
           DO 10 I=IB,IE
               QT(I) = HCONV * ARO(I) / TINFC
               RT(I) = -HCONV * ARO(I)

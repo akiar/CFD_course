@@ -4,7 +4,9 @@
       SUBROUTINE OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T)
 *     
 *     Print output of 1d to a python formatted file for plotting
-*
+*     Formatted into columns by coefficient, rows are node number 
+*     Used as input to assignment_1.py to plot temperature distributions
+*     Format for astropy.table- Table.read()
 *
 ************************************************************************
 *

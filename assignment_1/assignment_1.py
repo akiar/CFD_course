@@ -18,7 +18,8 @@ def results_1d():
     ax.set_xlabel("Node Number")
     ax.set_ylabel("Node Temperature")
     ax.xaxis.set_major_locator(plt.MultipleLocator(1.0))
-    ax.yaxis.set_major_locator(plt.MultipleLocator(10.0))
+    plt.ylim(min(output['T'])-0.01*min(output['T']),
+             max(output['T'])+0.01*max(output['T']))
     plt.xlim(0, max(output['I']+1))
 
     return()
