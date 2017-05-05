@@ -37,7 +37,7 @@
       ATW(IB-1) = 0
       ATE(IB-1) = 0
       ATP(IB-1) = 1
-      BT(IB-1) = 100 !+273.15
+      BT(IB-1) = 100 + 273.15
 *
 *     End Node
 *
@@ -49,7 +49,7 @@
       ATW(IE+1) = 0
       ATE(IE+1) = 0
       ATP(IE+1) = 1
-      BT(IE+1) = 100 !+273.15
+      BT(IE+1) = 30 + 273.15
 *     
       RETURN
       END

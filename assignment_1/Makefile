@@ -68,6 +68,10 @@ CFLAGS=$(SPECIALFLAGS) $(OPTFLAGS) $(PRJ_CFLAGS)
 	@echo Compiling .\out1d.f
 	@$(FC) -c -o "build\out1d.o" $(FFLAGS) ".\out1d.f"
 
+"build\outpy.o": ".\outpy.f"
+	@echo Compiling .\outpy.f
+	@$(FC) -c -o "build\outpy.o" $(FFLAGS) ".\outpy.f"
+
 "build\resid.o": ".\resid.f"
 	@echo Compiling .\resid.f
 	@$(FC) -c -o "build\resid.o" $(FFLAGS) ".\resid.f"
@@ -101,6 +105,8 @@ clean: .SYMBOLIC
 	@$(RM) "build\null.o"
 	@echo Deleting build\out1d.o and related files
 	@$(RM) "build\out1d.o"
+	@echo Deleting build\outpy.o and related files
+	@$(RM) "build\outpy.o"
 	@echo Deleting build\resid.o and related files
 	@$(RM) "build\resid.o"
 	@echo Deleting build\srct.o and related files
@@ -110,9 +116,9 @@ clean: .SYMBOLIC
 	@echo Deleting target.exe
 	@$(RM) "target.exe"
 
-"target.exe":  "build\bndct.o" "build\coeff.o" "build\difphi.o" "build\grdgeo.o" "build\inital.o" "build\input.o" "build\main.o" "build\makgrd.o" "build\null.o" "build\out1d.o" "build\resid.o" "build\srct.o" "build\tdma.o" "build\assignment_1.prj.target"
+"target.exe":  "build\bndct.o" "build\coeff.o" "build\difphi.o" "build\grdgeo.o" "build\inital.o" "build\input.o" "build\main.o" "build\makgrd.o" "build\null.o" "build\out1d.o" "build\outpy.o" "build\resid.o" "build\srct.o" "build\tdma.o" "build\assignment_1.prj.target"
 	@echo Generating target.exe
-	@$(FC) -o "target.exe" -static "build\bndct.o" "build\coeff.o" "build\difphi.o" "build\grdgeo.o" "build\inital.o" "build\input.o" "build\main.o" "build\makgrd.o" "build\null.o" "build\out1d.o" "build\resid.o" "build\srct.o" "build\tdma.o" $(LDIR) $(PRJ_LFLAGS)
+	@$(FC) -o "target.exe" -static "build\bndct.o" "build\coeff.o" "build\difphi.o" "build\grdgeo.o" "build\inital.o" "build\input.o" "build\main.o" "build\makgrd.o" "build\null.o" "build\out1d.o" "build\outpy.o" "build\resid.o" "build\srct.o" "build\tdma.o" $(LDIR) $(PRJ_LFLAGS)
 
 all: "target.exe" .SYMBOLIC
 

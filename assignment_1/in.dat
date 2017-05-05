@@ -1,6 +1,6 @@
   in.dat
 00002          IB
-00059          IE
+00010          IE
 00001          IDTYP: 1=RECT, 2=2D, 3=AXISYM, 4=GRADED RECT
 +0.00250E-00   DI (m): length of control volumes.
 +7.80000E+03   RHO (kg/m^3): Material density.
@@ -14,6 +14,6 @@
 00100          KNTNL : Maximum number of non-linear iterations
 +1.00000E-05   CRIT : Convergence criteria for non-linearities
 00001          LVLGEO =1 OUTPUT GEOMETRY, = 0 NO GEOMETRY OUTPUT
-00003          LVLCOF=0 NONE,1 FINAL,2 BEFORE ELIM.,3 COEFF., 4 ALL
-1.200000E+01   HCONV[W/M**2-K]. Convective heat transfer coefficient.(1D)
-2.500000E+01   TINF. Ambient temperature.(1D)
+00000          LVLCOF=0 NONE,1 FINAL,2 BEFORE ELIM.,3 COEFF., 4 ALL
+0.000000E+01   HCONV[W/M**2-K]. Convective heat transfer coefficient.(1D)
+0.000000E+01   TINF. Ambient temperature.(1D)

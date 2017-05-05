@@ -13,7 +13,7 @@
 *  Declaration of Variables
 *============================
 *
-      PARAMETER(ID=65)
+      PARAMETER(ID=120)
       REAL YNE(ID),ZUE(ID),XP(ID),XE(ID)
       REAL DIEP(ID),DISW(ID),DISE(ID),DSXY(ID),DSXZ(ID)
       REAL AREP(ID),ARO(ID),VOLP(ID)
@@ -108,6 +108,10 @@
 *--Print final solution
 *
         CALL OUT1D(T  , ' T      ',IDATO,IB-1, IE+1,1,ID)
+*
+*--Print to python friendly file for plotting
+*
+        CALL OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T)
         
 *--Save result to unformatted output file
 *

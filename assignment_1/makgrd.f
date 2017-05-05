@@ -34,8 +34,8 @@
 *     
 *  Statement functions for Y(X) and Z(X) profile of the duct
 *
-      Y(X)= 0.0125
-      Z(X)= 0.0125
+      Y(X)= 0.125
+      Z(X)= 0.125
 *
 *-----------------------------------------------------------------------
 *  No changes required below this line
