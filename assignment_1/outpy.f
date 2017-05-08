@@ -19,14 +19,14 @@
 *
 *     Open python formatted file
 *
-      IDATOP = 90
+      IDATOP = 91
       OPEN(IDATOP,FILE="outpy.txt")
 *
 *     Write necessary output to outpy.txt
 *
       WRITE(IDATOP,*)'# I T DE ATW ATP BT'
       DO 10 I=IB-1,IE+1
-          WRITE(IDATOP,7000) I, T(I), DE(I), ATW(I), ATP(I), BT(I) !ATE(I) ,
+          WRITE(IDATOP,7000) I, T(I), DE(I), ATW(I), ATP(I), BT(I)
  10   CONTINUE
  7000 FORMAT(' ',I5,' ',F7.3,
      C       ' ',F10.3,' ',F10.3,

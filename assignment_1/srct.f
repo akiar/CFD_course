@@ -27,14 +27,23 @@
 ******************************************************************
 *     Source term calculation
 *
-      IF (HCONV /= 0) THEN
-          DO 10 I=IB,IE
-              QT(I) = HCONV * ARO(I) / TINFC
-              RT(I) = -HCONV * ARO(I)
+      IF (HCONV /= 0) THEN    ! Loop if convection is present
+          DO 10 I=IB,IE       ! Convection on each outer face
+              QT(I) = 50000 * VOLP(I) ! if internal heat gen and no conv. 
+              RT(I) = 0               ! if internal heat gen and no conv. 
+*
+              !QT(I) = HCONV * ARO(I) * TINFC ! if internal faces are exposed to surroundings
+              !RT(I) = -HCONV * ARO(I)        ! if internal faces are exposed to surroundings
+*
+              IF (RT(I) < 0) THEN   ! Ensure RT is positive
+                  RT(I) = -RT(I)
+              ELSE
+                  RT(I) = RT(I)
+              END IF
    10     CONTINUE
 *
-      ELSE
-          DO 20 I = IB,IE
+      ELSE                    ! If no convection present set to 0
+          DO 20 I = IB,IE     
               QT(I) = 0
               RT(I) = 0
    20     CONTINUE

@@ -2,7 +2,7 @@
 *        file bndct.f
 ***********************************************************************
 *
-      SUBROUTINE BNDCT(ATP,ATW,ATE,BT, DE,AREP,IB,IE,ID)
+      SUBROUTINE BNDCT(ATP,ATW,ATE,BT, DE,AREP,IB,IE,ID,HCONV,TINF)
 *
 *     Subroutine to put the boundary condition information for T
 *     at each boundary node into equation coefficients.
@@ -19,7 +19,7 @@
 *
 *     Variable Declaration
 *
-      REAL ATP(ID),ATW(ID),ATE(ID),BT(ID)
+      REAL DE(ID),ATP(ID),ATW(ID),ATE(ID),BT(ID),HCONV,AREP(ID)
       INTEGER IB,IE,ID
 *
 ***********************************************************************
@@ -35,9 +35,9 @@
 *                         BP = HCONV*ARE(IB-1)*TINFC
 *                         
       ATW(IB-1) = 0
-      ATE(IB-1) = 0
-      ATP(IB-1) = 1
-      BT(IB-1) = 100 + 273.15
+      ATE(IB-1) = DE(IB-1)
+      ATP(IB-1) = HCONV * AREP(IB) + DE(IB-1)
+      BT(IB-1) = HCONV*AREP(IB)*TINF
 *
 *     End Node
 *
@@ -46,10 +46,10 @@
 *     Robin:      AW = 0, AE = DE(IE),  AP = HCONV*ARE(IE) + DE(IE),
 *                         BP = HCONV*ARE(IB-1)*TINFC
 *
-      ATW(IE+1) = 0
+      ATW(IE+1) = DE(IE)
       ATE(IE+1) = 0
-      ATP(IE+1) = 1
-      BT(IE+1) = 0 + 273.15
+      ATP(IE+1) = HCONV * AREP(IE) + DE(IE)
+      BT(IE+1) = HCONV*AREP(IE)*(TINF-10)
 *     
       RETURN
       END

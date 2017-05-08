@@ -13,7 +13,7 @@
 *  Declaration of Variables
 *============================
 *
-      PARAMETER(ID=120)
+      PARAMETER(ID=200)
       REAL YNE(ID),ZUE(ID),XP(ID),XE(ID)
       REAL DIEP(ID),DISW(ID),DISE(ID),DSXY(ID),DSXZ(ID)
       REAL AREP(ID),ARO(ID),VOLP(ID)
@@ -36,6 +36,7 @@
 *
 *--Read input parameters
 *
+      print *, "*********************"
       CALL FILDEF(IDATI,IRSI,IDATO,IRSO,ITERMO)
       CALL INPUT(IB,IE,IDTYP,DI,
      C          RHO,COND,CP,VISC,EMIS,
@@ -56,6 +57,7 @@
       CALL GRDGEO(XP,DIEP,DISE,DISW,AREP,ARO,VOLP,
      C     XE,YNE,ZUE,IDTYP,DSXY,DSXZ,IB,IE,ID,IDATO,ITERMO,LVLGEO)
 *
+      print *, "Grid completed"
 *--Check integration points and geometry (set LVLGEO=1 to check)
 *
       IF( LVLGEO .GE. 1) THEN
@@ -69,27 +71,35 @@
          CALL OUT1D(ARO, ' ARO    ',IDATO,IB  ,IE  ,1,ID)
          CALL OUT1D(VOLP,' VOLP   ',IDATO,IB-1,IE+1,1,ID)
       END IF
+      
+      print *, "inputs printed"
 *
 *--Initialize T field
 *
       CALL INITAL(T, T0,IRSI,IB,IE,ID)
-*
+      print *, "temp field initialized"
+*     
 *--Print initialized field
 *
       CALL OUT1D(T  ,'T(init)',IDATO,IB-1,IE+1,1,ID)
+      print *, "Temperature Initialized printed"
 *
 *--Compute active coefficients for T
 *
         CALL NULL(BT, IB,IE,ID)
         CALL DIFPHI(DE,COND,AREP,DIEP,IB,IE,ID)
+        print *, "DE Calculated"
         CALL SRCT(QT,RT, T,VOLP,ARO,HCONV,TINF,IB,IE,ID)
+        print *, "Source terms"
         CALL COEFF(ATP,ATW,ATE,BT,
      C             DE,QT,RT,VOLP,RHO,CP,
      C             IB,IE,ID)
+        print *, "Coefficients completed"
 *
 *--Set boundary conditions
 *
-        CALL BNDCT(ATP,ATW,ATE,BT, DE,AREP,IB,IE,ID)
+        CALL BNDCT(ATP,ATW,ATE,BT, DE,AREP,IB,IE,ID,HCONV,TINF)
+        print *, "Boundary Conditions"
 *
 *--Check computed, active coefficients (LVLCOF=1 to check)
 *
@@ -104,6 +114,7 @@
 *--Compute solution using direct solver 
 *
         CALL TDMA(T, ATP,ATE,ATW,BT,IB-1,IE+1,WORK1,WORK2,ID)
+        print *, "Solved"
 *
 *--Print final solution
 *
