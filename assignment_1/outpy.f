@@ -1,7 +1,7 @@
 *
 ************************************************************************
 *
-      SUBROUTINE OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T)
+      SUBROUTINE OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP)
 *     
 *     Print output of 1d to a python formatted file for plotting
 *     Formatted into columns by coefficient, rows are node number 
@@ -12,7 +12,7 @@
 *
 *     Variable declaration
 *
-      REAL T(ID),DE(ID),ATW(ID),ATP(ID),BT(ID)
+      REAL T(ID),DE(ID),ATW(ID),ATP(ID),BT(ID),XP(ID)
       INTEGER I,IDATOP
 *
 ************************************************************************
@@ -24,12 +24,12 @@
 *
 *     Write necessary output to outpy.txt
 *
-      WRITE(IDATOP,*)'# I T DE ATW ATP BT'
+      WRITE(IDATOP,*)'# I XP T DE ATW ATP BT'
       DO 10 I=IB-1,IE+1
-          WRITE(IDATOP,7000) I, T(I), DE(I), ATW(I), ATP(I), BT(I)
+          WRITE(IDATOP,7000) I,XP(I),T(I),DE(I),ATW(I),ATP(I),BT(I)
  10   CONTINUE
- 7000 FORMAT(' ',I5,' ',F7.3,
-     C       ' ',F10.3,' ',F10.3,
-     C       ' ',F10.3,' ',F10.3)
+ 7000 FORMAT(' ',I5,' ',F10.5,' ',F10.5,
+     C       ' ',F10.5,' ',F10.5,
+     C       ' ',F10.5,' ',F10.5)
       RETURN
       END

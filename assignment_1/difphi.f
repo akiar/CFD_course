@@ -29,7 +29,7 @@
 ***********************************************************************
 *     East Diffusion coefficient calculation
 *     
-      DO 10 I=IB-1,IE                       ! Loop over all internal nodes
+      DO 10 I=IB-1,IE                         ! Loop over all internal nodes
           DE(I) = GAMA * AREP(I) / DIEP(I)    ! Calculate De at each node and assign to I location
    10 CONTINUE
 *

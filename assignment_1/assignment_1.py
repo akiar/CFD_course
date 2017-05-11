@@ -7,7 +7,7 @@ import pylab
 
 def results_1d(question_num):
     # iteration variables
-    di = "001"
+    di = "00025"
     t_o = "100"
     '''---------------------------------------------------------------------'''
 
@@ -19,21 +19,22 @@ def results_1d(question_num):
                                                len(output['I'])-2, di, t_o)
 
     print "Number of CVs: ", len(output['I']) - 2   # -2 for IB-1 and IE+1
-    print "Max temp: ", max(output['T']), output['I'][output['T']==max(output['T'])]
-
+    print "MIN temp: ", min(output['T']), output['XP'][output['T']==min(output['T'])]
     # Plot temperature as a function of node value along the bar
-    temp_fig = plt.figure(figsize=(15,10))
+    temp_fig = plt.figure(figsize=(10,10))
     ax = temp_fig.add_subplot(111)
-    ax.plot(output['I'], output['T'])
-    ax.scatter(output['I'], output['T'])
+    ax.plot(output['XP'],
+            output['T'])
+    ax.scatter(output['XP'],
+               output['T'])
 
     # Format figure
     ax.set_xlabel("Node Number")
     ax.set_ylabel("Node Temperature")
-    ax.xaxis.set_major_locator(plt.MultipleLocator(1.0))
+    #ax.xaxis.set_major_locator(plt.MultipleLocator(1))
     plt.ylim(min(output['T'])-0.01*min(output['T']),
              max(output['T'])+0.01*max(output['T']))
-    plt.xlim(0, max(output['I']+1))
+   # plt.xlim(0, max(output['XP']))
 
     print "temperature:"
     print output['T']

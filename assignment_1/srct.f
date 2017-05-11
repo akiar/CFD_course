@@ -2,7 +2,7 @@
 *        file srct.f
 ******************************************************************
 *
-      SUBROUTINE SRCT(QT,RT, T,VOLP,ARO,HCONV,TINFC,IB,IE,ID)
+      SUBROUTINE SRCT(QT,RT, T,VOLP,ARO,HCONV,TINFC,IB,IE,ID,EMIS)
 *
 *     Subroutine to calculate the net source of T in each interior
 *     control volume/ unit volume.
@@ -17,37 +17,61 @@
 *     NOTE: For solution with radiation, temperature must be
 *           absolute!!!
 *
-******************************************************************
+************************************************************************
 *     Variable Declaration
-      REAL T(ID),VOLP(ID),ARO(ID),    ! Inputs
-     C     HCONV,TINFC,               ! Inputs
-     C     QT(ID),RT(ID)              ! Outputs
-      INTEGER IB,IE,ID,               ! Inputs
-     C        I                       ! loop integer
-******************************************************************
-*     Source term calculation
+      PARAMETER (SBC=5.67E-8)        ! stefan-boltzmann constant for rad.
+      REAL T(ID),VOLP(ID),ARO(ID),   ! Inputs
+     C     HCONV,TINFC,              ! Inputs
+     C     INTGEN,                   ! Internal heat generation
+     C     QT(ID),RT(ID)             ! Outputs
+      INTEGER IB,IE,ID,              ! Inputs
+     C        I,LIN                  ! loop integer, linearization type
+************************************************************************
 *
-      IF (HCONV /= 0) THEN    ! Loop if convection is present
-          DO 10 I=IB,IE       ! Convection on each outer face
-              QT(I) = 50000 * VOLP(I) ! if internal heat gen and no conv. 
-              RT(I) = 0               ! if internal heat gen and no conv. 
+*     Source term calculation: Loop over all CVs and calculate sources
+*     --Set INTGEN to specified internal heat generation (W/m^3) 
+*     --Set LIN to 1,2, or 3 for linearization technique
+*     --Loops will adjust based on heat transfer methods present
+*         -- EMIS = 0 / no radiation
+*         -- HCONV = 0 / no convection
 *
-              !QT(I) = HCONV * ARO(I) * TINFC ! if internal faces are exposed to surroundings
-              !RT(I) = -HCONV * ARO(I)        ! if internal faces are exposed to surroundings
+*--Linearization and heat generation flags
 *
-              IF (RT(I) < 0) THEN   ! Ensure RT is positive
-                  RT(I) = -RT(I)
-              ELSE
-                  RT(I) = RT(I)
-              END IF
-   10     CONTINUE
+      INTGEN = 0  ! set internal CV heat generation (W/m^3)
+      LIN = 1         ! choose linearization type: 1, 2, 3 (Newton-raphson) 
 *
-      ELSE                    ! If no convection present set to 0
-          DO 20 I = IB,IE     
-              QT(I) = 0
-              RT(I) = 0
-   20     CONTINUE
-      END IF
-      
+*--Begin loop over all CVs
+*
+      DO 10 I=IB,IE
+*
+*--Linearization 1
+*
+        IF (LIN == 1) THEN
+          QT(I) = - EMIS * ARO(I) * SBC *(T(I)**4 - TINFC**4)
+     C            + HCONV * ARO(I) * TINFC
+     C            + INTGEN * VOLP(I)
+          RT(I) = - HCONV * ARO(I) 
+*
+*--Linearization 2
+*
+        ELSE IF  (LIN == 2) THEN
+          QT(I) = EMIS * SBC * ARO(I) * (TINFC**4)
+     C            + HCONV * ARO(I) * TINFC
+     C            + INTGEN * VOLP(I)
+          RT(I) = - EMIS * ARO(I) * SBC * (T(I)**3)
+     C            - HCONV * ARO(I)
+*     
+*--Linearization 3, Newton - Raphson
+*
+        ELSE
+          QT(I) = EMIS * ARO(I) * SBC * (3 * (T(I)**4) + TINFC**4)
+     C            + HCONV * ARO(I) * TINFC
+     C            + INTGEN * VOLP(I)
+          RT(I) = - 4 * EMIS * ARO(I) * SBC *(T(I)**3)
+     C            - HCONV * ARO(I)
+*
+        END IF
+ 10   CONTINUE
+
       RETURN
       END

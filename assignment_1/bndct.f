@@ -26,18 +26,18 @@
 *
 *     Boundary Condition Calculations
 *     Set coefficients for Dirichlet, Neuman, and Robin conditions
-*      
+*
 *     Beginning Node
 *
 *     Dirichlet:  AW = 0, AE = 0, AP = 1, BP = Tspec
 *     Neumann:    AW = 0, AE = 1, AP = 1, BP = Qspec/DE(IB-1)
 *     Robin:      AW = 0, AE = DE(IB-1), AP = HCONV*ARE(IB-1) + DE(IB-1),
 *                         BP = HCONV*ARE(IB-1)*TINFC
-*                         
+*
       ATW(IB-1) = 0
-      ATE(IB-1) = DE(IB-1)
-      ATP(IB-1) = HCONV * AREP(IB) + DE(IB-1)
-      BT(IB-1) = HCONV*AREP(IB)*TINF
+      ATE(IB-1) = 0 !DE(IB-1)    ! QUESTION 3
+      ATP(IB-1) = 1 ! HCONV * AREP(IB-1) + DE(IB-1)  ! QUESTION 3
+      BT(IB-1) = 373.15 !HCONV*AREP(IB-1)*TINF ! QUESTION 3
 *
 *     End Node
 *
@@ -46,10 +46,10 @@
 *     Robin:      AW = 0, AE = DE(IE),  AP = HCONV*ARE(IE) + DE(IE),
 *                         BP = HCONV*ARE(IB-1)*TINFC
 *
-      ATW(IE+1) = DE(IE)
+      ATW(IE+1) = 0 !DE(IE)      ! QUESTION 3
       ATE(IE+1) = 0
-      ATP(IE+1) = HCONV * AREP(IE) + DE(IE)
-      BT(IE+1) = HCONV*AREP(IE)*(TINF-10)
+      ATP(IE+1) = 1 !HCONV * AREP(IE) + DE(IE) ! QUESTION 3
+      BT(IE+1) = 373.15 !HCONV*AREP(IE)*(TINF-10) ! QUESTION 3
 *     
       RETURN
       END

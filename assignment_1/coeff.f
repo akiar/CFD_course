@@ -44,13 +44,13 @@
 *         AP*TP = AW*TW + AE*TE + bP
 *         TW = T(I-1)
 *
-      DO 10 I = IB,IE
+      DO 10 I = IB,IE+1
           AW(I) = DE(I-1)
           AE(I) = DE(I)
           ASUM(I) = AW(I) + AE(I)
-          AP(I) = ASUM(I) + R(I)
+          AP(I) = ASUM(I) - R(I)
           B(I) = Q(I)
-          
+*
    10 CONTINUE
       RETURN
       END

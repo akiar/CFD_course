@@ -25,7 +25,21 @@
       REAL PHI(ID),AP(ID),AW(ID),AE(ID),B(ID)
       INTEGER IB,IE
 *
-
+***********************************************************************
+*
+*     Calculate residuals for each CV
+*     
+      SUMRSD=0.0
+      DO 10 I=IB,IE   ! loop over all CVs
+          RSD(I) = AP(I)*PHI(I) - AW(I)*PHI(I-1) - AE(I)*PHI(I+1) - B(I)
+          SUMRSD = SUMRSD + RSD(I) 
+ 10   CONTINUE
+*
+***********************************************************************
+*
+*     Calculate Average residual
+*
+      AVRSD = SUMRSD/(IE - IB)
       
       RETURN
       END
