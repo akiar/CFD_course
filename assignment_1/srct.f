@@ -37,7 +37,7 @@
 *
 *--Linearization and heat generation flags
 *
-      INTGEN = 0  ! set internal CV heat generation (W/m^3)
+      INTGEN = 50000      ! set internal CV heat generation (W/m^3). QUESTION 3: INTGEN = 50000
       LIN = 1         ! choose linearization type: 1, 2, 3 (Newton-raphson) 
 *
 *--Begin loop over all CVs
@@ -50,7 +50,7 @@
           QT(I) = - EMIS * ARO(I) * SBC *(T(I)**4 - TINFC**4)
      C            + HCONV * ARO(I) * TINFC
      C            + INTGEN * VOLP(I)
-          RT(I) = - HCONV * ARO(I) 
+          RT(I) = 0 !- HCONV * ARO(I) ! Question 3: RT(I) = 0 for only internal generation
 *
 *--Linearization 2
 *

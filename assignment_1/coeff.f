@@ -44,7 +44,7 @@
 *         AP*TP = AW*TW + AE*TE + bP
 *         TW = T(I-1)
 *
-      DO 10 I = IB,IE+1
+      DO 10 I = IB,IE
           AW(I) = DE(I-1)
           AE(I) = DE(I)
           ASUM(I) = AW(I) + AE(I)

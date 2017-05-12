@@ -90,10 +90,10 @@
 *--Compute active coefficients for T
 *
         CALL NULL(BT, IB,IE,ID)
-        CALL DIFPHI(DE,COND,AREP,DIEP,IB,IE,ID)
+        CALL DIFPHI(DE, COND,AREP,DIEP,IB,IE,ID)
         PRINT *, "Diffusion Coefficients"
 *
-        CALL SRCT(QT,RT, T,VOLP,ARO,HCONV,TINF,IB,IE,ID,EMIS) !
+        CALL SRCT(QT,RT, T,VOLP,ARO,HCONV,TINF,IB,IE,ID,EMIS)
         PRINT *, "Source terms"
 *
         CALL COEFF(ATP,ATW,ATE,BT,
@@ -119,15 +119,16 @@
 *--Calculate Residuals and check convergence
 *
         IF (M > 1) THEN      ! Only calculate residuals if first loop is passed
+*
           CALL RESID(RSD,AVRSD, T,ATP,ATW,ATE,BT,IB,IE,ID) ! use old temperature
           RESIDUALS(M) = AVRSD    ! Save all residual calculations
           PRINT *, "AVERAGE RESIDUAL ",M," = ",RESIDUALS(M)
+*          
           ! CALL OUTRES(M,RESIDUALS)
 *
           ! Check if convergence has been met, exit if it has
-          CRITERIA = (AVRSD-RESIDUALS(M-1))/RESIDUALS(M-1)    ! Calculate conv. criteria
 *
-          IF (CRITERIA < CRIT) THEN
+          IF (ABS(RESIDUALS(M)) < CRIT) THEN
             PRINT *, "Convergence Reached"
             EXIT
           END IF
@@ -152,13 +153,13 @@
 *
 *     QUESTION 1: Calculate Heat flux at base of fin
 *
-!      HEATFLUX = -DE(1)*(T(2) - T(1))
-!      PRINT *, "HEATFLUX = ", HEATFLUX,"W/m^2"
+      HEATFLUX = -DE(1)*(T(2) - T(1))
+      PRINT *, "HEATFLUX = ", HEATFLUX,"W/m^2"
 *        
 *     QUESTION 2: Calculate temperature gradient across first half of fin
 *
       CENTERNODE = (IE+IB)/2
-      PRINT *, T(IE+2-(CENTERNODE+1)/2), ((CENTERNODE+1)/2)-1
+!      PRINT *, T(IE+2-(CENTERNODE+1)/2), ((CENTERNODE+1)/2)-1
       
       TEMPGRAD=(T(CENTERNODE)-T((CENTERNODE+1)/2))/
      C         ((((CENTERNODE+1)/2)-1)*DIEP(CENTERNODE))  ! difference between CENTERNODE-1 and center node divided by

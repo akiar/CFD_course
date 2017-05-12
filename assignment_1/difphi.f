@@ -20,13 +20,17 @@
 *               interior control volume faces.
 *
 ***********************************************************************
+*
 *     Initialize Variables
+*
       REAL DE(ID),            ! diffusion coefficient for east face, output
      C     AREP(ID),DIEP(ID), ! CV area of face at e, grid distance in i at e, input
      C     GAMA               ! diffusivity * density, input
       INTEGER IB,IE,ID,       ! first and last interior indices, array dimensions
      C        I               ! integer for loops
+*     
 ***********************************************************************
+*
 *     East Diffusion coefficient calculation
 *     
       DO 10 I=IB-1,IE                         ! Loop over all internal nodes
