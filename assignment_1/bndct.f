@@ -35,9 +35,9 @@
 *                         BP = HCONV*AREP(IB-1)*TINFC
 *
       ATW(IB-1) = 0
-      ATE(IB-1) = DE(IB-1) 
-      ATP(IB-1) = HCONV * AREP(IB-1) + DE(IB-1)
-      BT(IB-1) = HCONV * AREP(IB-1) * 323.15 ! QUESTION 3: TINFC1 = 323.15
+      ATE(IB-1) = 0 ! DE(IB-1) ! Q3
+      ATP(IB-1) = 1 ! HCONV * AREP(IB-1) + DE(IB-1) ! Q3
+      BT(IB-1) = 400 ! HCONV * AREP(IB-1) * 323.15 ! QUESTION 3: TINFC1 = 323.15
 *
 *     End Node
 *
@@ -46,10 +46,10 @@
 *     Robin:      AW = 0, AE = DE(IE),  AP = HCONV*AREP(IE) + DE(IE),
 *                         BP = HCONV*AREP(IB-1)*TINFC
 *
-      ATW(IE+1) = DE(IE) 
+      ATW(IE+1) = 0 ! DE(IE) ! Q3
       ATE(IE+1) = 0
-      ATP(IE+1) = HCONV * AREP(IE) + DE(IE)
-      BT(IE+1) = HCONV * AREP(IB-1) * 313.15 ! QUESTION 3: TINFC2 = 313.15
+      ATP(IE+1) = 1 ! HCONV * AREP(IE) + DE(IE) ! Q3
+      BT(IE+1) = 0 ! HCONV * AREP(IB-1) * 313.15 ! QUESTION 3: TINFC2 = 313.15
 *     
       RETURN
       END

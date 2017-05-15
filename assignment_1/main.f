@@ -13,7 +13,7 @@
 *  Declaration of Variables
 *============================
 *
-      PARAMETER(ID=110)
+      PARAMETER(ID=120)
       REAL YNE(ID),ZUE(ID),XP(ID),XE(ID)
       REAL DIEP(ID),DISW(ID),DISE(ID),DSXY(ID),DSXZ(ID)
       REAL AREP(ID),ARO(ID),VOLP(ID)
@@ -151,22 +151,22 @@
 *
       CALL OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP)
 *
-*     QUESTION 1: Calculate Heat flux at base of fin
+*     QUESTION 1 & 4: Calculate Heat flux at base of fin
 *
       HEATFLUX = -DE(1)*(T(2) - T(1))
       PRINT *, "HEATFLUX = ", HEATFLUX,"W/m^2"
 *        
 *     QUESTION 2: Calculate temperature gradient across first half of fin
 *
-      CENTERNODE = (IE+IB)/2
+!      CENTERNODE = (IE+IB)/2
 !      PRINT *, T(IE+2-(CENTERNODE+1)/2), ((CENTERNODE+1)/2)-1
       
-      TEMPGRAD=(T(CENTERNODE)-T((CENTERNODE+1)/2))/
-     C         ((((CENTERNODE+1)/2)-1)*DIEP(CENTERNODE))  ! difference between CENTERNODE-1 and center node divided by
-      PRINT *, "TEMPGRAD FIRST = ", TEMPGRAD," K/m"       ! CV length
-      TEMPGRAD=(T(CENTERNODE)-T(IE+2-(CENTERNODE+1)/2))/
-     C         ((((CENTERNODE+1)/2)-1)*DIEP(CENTERNODE))  ! difference between CENTERNODE-1 and center node divided by
-      PRINT *, "TEMPGRAD SECOND = ", TEMPGRAD," K/m"       ! CV length
+!      TEMPGRAD=(T(CENTERNODE)-T((CENTERNODE+1)/2))/
+!     C         ((((CENTERNODE+1)/2)-1)*DIEP(CENTERNODE))  ! difference between CENTERNODE-1 and center node divided by
+!      PRINT *, "TEMPGRAD FIRST = ", TEMPGRAD," K/m"       ! CV length
+!      TEMPGRAD=(T(CENTERNODE)-T(IE+2-(CENTERNODE+1)/2))/
+!     C         ((((CENTERNODE+1)/2)-1)*DIEP(CENTERNODE))  ! difference between CENTERNODE-1 and center node divided by
+!      PRINT *, "TEMPGRAD SECOND = ", TEMPGRAD," K/m"       ! CV length
 * 
 *--Save result to unformatted output file
 *

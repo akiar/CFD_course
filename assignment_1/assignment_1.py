@@ -4,11 +4,13 @@ from astropy.table import Table
 from matplotlib import pyplot as plt
 import os
 import pylab
+import shutil
 
 def results_1d(question_num):
     # iteration variables
     di = "00025"
     t_o = "100"
+    lin = "3"
     '''---------------------------------------------------------------------'''
 
     # Load outpy.txt, formatted output file from fortran assignment_1.prj
@@ -17,6 +19,9 @@ def results_1d(question_num):
     path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_1\\{}".format(question_num)
     file_name = "{}_CV-{}_CVL-{}_To-{}".format("Node",
                                                len(output['I'])-2, di, t_o)
+    data_name = "output_linearization_{}_CV_{}".format(lin,
+                                                       len(output['I'])-2)
+    shutil.copy2('outpy.txt', path +"\\"+data_name+'_output.txt')
 
     print "Number of CVs: ", len(output['I']) - 2   # -2 for IB-1 and IE+1
     print "max temp: ", max(output['T']), output['XP'][output['T']==max(output['T'])]
