@@ -44,12 +44,12 @@
 *     Dirichlet:  AW = 0, AE = 0, AP = 1, BP = Tspec
 *     Neumann:    AW = 1, AE = 0, AP = 1, BP = -Qspec/DE(IE)
 *     Robin:      AW = 0, AE = DE(IE),  AP = HCONV*AREP(IE) + DE(IE),
-*                         BP = HCONV*AREP(IB-1)*TINFC
+*                         BP = HCONV*AREP(IE)*TINFC
 *
       ATW(IE+1) = 0 ! DE(IE) ! Q3
       ATE(IE+1) = 0
       ATP(IE+1) = 1 ! HCONV * AREP(IE) + DE(IE) ! Q3
-      BT(IE+1) = 273.15 ! HCONV * AREP(IB-1) * 313.15 ! Q3: TINFC2 = 313.15
+      BT(IE+1) = 373.15 ! HCONV * AREP(IE) * 313.15 ! Q3: TINFC2 = 313.15
 *     
       RETURN
       END

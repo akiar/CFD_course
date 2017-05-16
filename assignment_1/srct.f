@@ -34,7 +34,7 @@
 *     Set LIN to 1,2, or 3 for linearization technique
 *
       INTGEN = 0      ! set internal CV heat generation (W/m^3). QUESTION 3: INTGEN = 50000
-      LIN = 1         ! choose linearization type: 1, 2, 3 (Newton-raphson)
+      LIN = 1             ! choose linearization type: 1, 2, 3 (Newton-raphson)
 *
 ************************************************************************
 *

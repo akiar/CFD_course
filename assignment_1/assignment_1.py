@@ -21,10 +21,13 @@ def results_1d(question_num):
                                                len(output['I'])-2, di, t_o)
     data_name = "output_linearization_{}_CV_{}".format(lin,
                                                        len(output['I'])-2)
+    if not os.path.exists(path):
+        print "New_path"
+        os.makedirs(path)
     shutil.copy2('outpy.txt', path +"\\"+data_name+'_output.txt')
 
     print "Number of CVs: ", len(output['I']) - 2   # -2 for IB-1 and IE+1
-    print "max temp: ", max(output['T']), output['XP'][output['T']==max(output['T'])]
+    print "min temp: ", min(output['T']), output['XP'][output['T']==min(output['T'])]
 
     # Plot temperature as a function of node value along the bar
     node_fig = plt.figure(figsize=(10,10))
