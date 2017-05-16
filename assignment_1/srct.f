@@ -1,4 +1,4 @@
-*
+*     
 *        file srct.f
 ******************************************************************
 *
@@ -18,6 +18,7 @@
 *           absolute!!!
 *
 ************************************************************************
+*
 *     Variable Declaration
       PARAMETER (SBC=5.67E-8)        ! stefan-boltzmann constant for rad.
       REAL T(ID),VOLP(ID),ARO(ID),   ! Inputs
@@ -26,19 +27,21 @@
      C     QT(ID),RT(ID)             ! Outputs
       INTEGER IB,IE,ID,              ! Inputs
      C        I,LIN                  ! loop integer, linearization type
-************************************************************************
-*
-*     Source term calculation: Loop over all CVs and calculate sources
-*     --Set INTGEN to specified internal heat generation (W/m^3) 
-*     --Set LIN to 1,2, or 3 for linearization technique
-*     --Loops will adjust based on heat transfer methods present
-*         -- EMIS = 0 / no radiation
-*         -- HCONV = 0 / no convection
 *
 *--Linearization and heat generation flags
 *
+*     Set INTGEN to specified internal heat generation (W/m^3) 
+*     Set LIN to 1,2, or 3 for linearization technique
+*
       INTGEN = 0      ! set internal CV heat generation (W/m^3). QUESTION 3: INTGEN = 50000
-      LIN = 3         ! choose linearization type: 1, 2, 3 (Newton-raphson) 
+      LIN = 1         ! choose linearization type: 1, 2, 3 (Newton-raphson)
+*
+************************************************************************
+*
+*     Source term calculation: Loop over all CVs and calculate sources
+*     --Loops will adjust based on heat transfer methods present
+*         -- EMIS = 0 / no radiation
+*         -- HCONV = 0 / no convection
 *
 *--Begin loop over all CVs
 *
@@ -72,6 +75,6 @@
 *
         END IF
  10   CONTINUE
-
+*
       RETURN
       END

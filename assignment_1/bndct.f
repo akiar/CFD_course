@@ -37,7 +37,7 @@
       ATW(IB-1) = 0
       ATE(IB-1) = 0 ! DE(IB-1) ! Q3
       ATP(IB-1) = 1 ! HCONV * AREP(IB-1) + DE(IB-1) ! Q3
-      BT(IB-1) = 400 ! HCONV * AREP(IB-1) * 323.15 ! QUESTION 3: TINFC1 = 323.15
+      BT(IB-1) = 373.15 ! HCONV * AREP(IB-1) * 323.15 ! Q3: TINFC1 = 323.15
 *
 *     End Node
 *
@@ -49,7 +49,7 @@
       ATW(IE+1) = 0 ! DE(IE) ! Q3
       ATE(IE+1) = 0
       ATP(IE+1) = 1 ! HCONV * AREP(IE) + DE(IE) ! Q3
-      BT(IE+1) = 0 ! HCONV * AREP(IB-1) * 313.15 ! QUESTION 3: TINFC2 = 313.15
+      BT(IE+1) = 273.15 ! HCONV * AREP(IB-1) * 313.15 ! Q3: TINFC2 = 313.15
 *     
       RETURN
       END

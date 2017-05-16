@@ -28,8 +28,8 @@
 ***********************************************************************
 *
 *     Calculate residuals for each CV
-*     
-      SUMRSD=0.0
+*
+      SUMRSD = 0.0
       DO 10 I=IB,IE   ! loop over all CVs
           RSD(I) = AP(I)*PHI(I) - AW(I)*PHI(I-1) - AE(I)*PHI(I+1) - B(I)
           SUMRSD = SUMRSD + ABS(RSD(I))
@@ -39,7 +39,7 @@
 *
 *     Calculate Average residual
 *
-      AVRSD = SUMRSD/(IE - IB)
+      AVRSD = SUMRSD/(IE - IB + 1)
 *      
       RETURN
       END

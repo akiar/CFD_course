@@ -10,7 +10,7 @@ def results_1d(question_num):
     # iteration variables
     di = "00025"
     t_o = "100"
-    lin = "3"
+    lin = "1"
     '''---------------------------------------------------------------------'''
 
     # Load outpy.txt, formatted output file from fortran assignment_1.prj

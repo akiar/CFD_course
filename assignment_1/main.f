@@ -21,8 +21,6 @@
       REAL DE(ID),QT(ID),RT(ID)
       REAL ATW(ID),ATE(ID),ATP(ID),BT(ID)
       REAL T(ID),TOLD(ID)
-      REAL RSD(ID),AVRSD,RESIDUALS(ID)
-      
 *
       INTEGER I,KNTIN,IE1
       INTEGER IDATI,IRSI,IDATO,IRSO,ITERMO
@@ -31,6 +29,7 @@
       REAL DI,RHO,COND,CP,EMIS,VISC,T0,DTIME,CRIT
       REAL HCONV,TINF
       REAL CRITERIA,HEATFLUX,TEMPGRAD
+      REAL RSD(ID),AVRSD,RESIDUALS(ID)
       INTEGER CENTERNODE,INTER
 *
 *
@@ -122,13 +121,11 @@
 *
           CALL RESID(RSD,AVRSD, T,ATP,ATW,ATE,BT,IB,IE,ID) ! use old temperature
           RESIDUALS(M) = AVRSD    ! Save all residual calculations
-          PRINT *, "AVERAGE RESIDUAL ",M," = ",RESIDUALS(M)
-*          
-          ! CALL OUTRES(M,RESIDUALS)
+          PRINT *, "AVERAGE RESIDUAL ",M," = ",AVRSD
 *
           ! Check if convergence has been met, exit if it has
 *
-          IF (ABS(RESIDUALS(M)) < CRIT) THEN
+          IF (ABS(AVRSD) < CRIT) THEN
             PRINT *, "Convergence Reached"
             EXIT
           END IF
@@ -158,16 +155,16 @@
 *        
 *     QUESTION 2: Calculate temperature gradient across first half of fin
 *
-!      CENTERNODE = (IE+IB)/2
-!      PRINT *, T(IE+2-(CENTERNODE+1)/2), ((CENTERNODE+1)/2)-1
-      
-!      TEMPGRAD=(T(CENTERNODE)-T((CENTERNODE+1)/2))/
-!     C         ((((CENTERNODE+1)/2)-1)*DIEP(CENTERNODE))  ! difference between CENTERNODE-1 and center node divided by
-!      PRINT *, "TEMPGRAD FIRST = ", TEMPGRAD," K/m"       ! CV length
-!      TEMPGRAD=(T(CENTERNODE)-T(IE+2-(CENTERNODE+1)/2))/
-!     C         ((((CENTERNODE+1)/2)-1)*DIEP(CENTERNODE))  ! difference between CENTERNODE-1 and center node divided by
-!      PRINT *, "TEMPGRAD SECOND = ", TEMPGRAD," K/m"       ! CV length
-* 
+*      CENTERNODE = (IE+IB)/2
+*      PRINT *, T(IE+2-(CENTERNODE+1)/2), ((CENTERNODE+1)/2)-1
+*      
+*      TEMPGRAD=(T(CENTERNODE)-T((CENTERNODE+1)/2))/
+*     C         ((((CENTERNODE+1)/2)-1)*DIEP(CENTERNODE))  ! difference between CENTERNODE-1 and center node divided by
+*      PRINT *, "TEMPGRAD FIRST = ", TEMPGRAD," K/m"       ! CV length
+*      TEMPGRAD=(T(CENTERNODE)-T(IE+2-(CENTERNODE+1)/2))/
+*     C         ((((CENTERNODE+1)/2)-1)*DIEP(CENTERNODE))  ! difference between CENTERNODE-1 and center node divided by
+*      PRINT *, "TEMPGRAD SECOND = ", TEMPGRAD," K/m"       ! CV length
+*
 *--Save result to unformatted output file
 *
       CALL SAVE(T,IRSO,IB,IE,ID)
