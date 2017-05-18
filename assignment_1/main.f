@@ -120,8 +120,8 @@
         IF (M > 1) THEN      ! Only calculate residuals if first loop is passed
 *
           CALL RESID(RSD,AVRSD, T,ATP,ATW,ATE,BT,IB,IE,ID) ! use old temperature
-          RESIDUALS(M) = AVRSD    ! Save all residual calculations
-          PRINT *, "AVERAGE RESIDUAL ",M," = ",AVRSD
+          RESIDUALS(M) = ABS(AVRSD)    ! Save all residual calculations
+          PRINT *, "AVERAGE RESIDUAL ",M," = ",ABS(AVRSD)
 *
           ! Check if convergence has been met, exit if it has
 *

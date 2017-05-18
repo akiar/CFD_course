@@ -6,11 +6,14 @@ import os
 import pylab
 import shutil
 
+symbol = ['*', '+', '^', 's', 'o', '>', '<']
+colours = ['k', 'b', 'y', 'g', 'm', 'c', 'r']
+
 def results_1d(question_num):
     # iteration variables
     di = "00025"
     t_o = "100"
-    lin = "1"
+    lin = "3"
     '''---------------------------------------------------------------------'''
 
     # Load outpy.txt, formatted output file from fortran assignment_1.prj
@@ -75,3 +78,53 @@ def results_1d(question_num):
     plt.show()
     
     return()
+
+def composite_plots(problem):
+    '''Make composites of each mesh with analytic solution'''
+    lin = "1"
+    path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_1\\{}\\".format(problem)
+
+    composite = plt.figure(figsize=(12,12))
+    ax = composite.add_subplot(111)
+    num_cvs = ["1", "2", "4", "8", "16", "32", "64"]
+    converged = "32"
+
+    for i in range(0, len(num_cvs)):
+        results = Table.read(path + "output_linearization_"+lin+"_CV_"+num_cvs[i]+"_output.txt",
+                            format='ascii.commented_header', guess=False)
+        if i==0:
+            legend = num_cvs[i]+" CV"
+        else:
+            legend = num_cvs[i]+" CVs"
+
+        if num_cvs[i] == converged:
+            ax.plot(results['XP'], results['T'], color=colours[i],
+                    label=legend+", Converged")
+        else:
+            ax.scatter(results['XP'], results['T'], color=colours[i],
+                       marker=symbol[i], s=700/((i+1)*5), label=legend)
+
+    ax.legend(loc='lower left', fontsize=14, scatterpoints=1)
+    ax.set_xlabel('x position [m]', fontweight='bold', fontsize=14)
+    ax.set_ylabel('T(x) [K]', fontweight='bold', fontsize=14)
+
+    file_name = "composite_{}".format(problem)
+    pylab.savefig(os.path.join(path, file_name))
+    plt.show()
+    plt.close()
+
+    if problem != "problem_1":  
+        analytic = Table.read(path + "analytic.txt",
+                              format="ascii.commented_header", guess=False)
+        analytic_plot = plt.figure(figsize=(12,12))
+        ax1 = analytic_plot.add_subplot(111)
+        converged_data = Table.read(path + "output_linearization_"+lin+"_CV_"+converged+"_output.txt",
+                                    format='ascii.commented_header', guess=False)
+
+        ax1.scatter(converged_data["XP"], converged_data["T"], marker='o',
+                    color='b', s=50, label=converged+" CVs, Converged Solution")
+        ax1.plot(analytic["XP"], analytic["T"], color='k',
+                 label="Analytic Solution")
+        ax1.legend(loc='lower left', fontsize=14, scatterpoints=1)
+        
+    return ()
