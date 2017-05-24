@@ -2,7 +2,7 @@
 *     outpy.f
 ************************************************************************
 *
-      SUBROUTINE OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP)
+      SUBROUTINE OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP,KNTOUT)
 *     
 *     Print output of 1d analysis to a python formatted file for plotting
 *     Formatted into columns by coefficient, rows are node number 
@@ -25,12 +25,21 @@
 *
 *     Write necessary output to outpy.txt
 *
-      WRITE(IDATOP,*)'# I XP T DE ATW ATP BT' ! Print header
-      DO 10 I=IB-1,IE+1                       ! Loop over all control volumes
-          WRITE(IDATOP,7000) I,XP(I),T(I),DE(I),ATW(I),ATP(I),BT(I)   !print information
- 10   CONTINUE
- 7000 FORMAT(' ',I5,' ',F10.5,' ',F10.5,      ! Set format
-     C       ' ',F10.5,' ',F10.5,
-     C       ' ',F10.5,' ',F10.5)
+      IF (KNTOUT==0) THEN
+          WRITE(IDATOP,*)'# I XP T DE ATW ATP BT' ! Print header
+          DO 10 I=IB-1,IE+1                       ! Loop over all control volumes
+              WRITE(IDATOP,7000) I,XP(I),T(I),DE(I),ATW(I),ATP(I),BT(I)   !print information
+ 10       CONTINUE
+ 7000     FORMAT(' ',I5,' ',F10.5,' ',F10.5,      ! Set format
+     C           ' ',F10.5,' ',F10.5,
+     C           ' ',F10.5,' ',F10.5)
+      ELSE
+          DO 20 I=IB-1,IE+1                       ! Loop over all control volumes
+              WRITE(IDATOP,7010) I,XP(I),T(I),DE(I),ATW(I),ATP(I),BT(I)   !print information
+ 20       CONTINUE
+ 7010     FORMAT(' ',I5,' ',F10.5,' ',F10.5,      ! Set format
+     C           ' ',F10.5,' ',F10.5,
+     C           ' ',F10.5,' ',F10.5)
+      ENDIF
       RETURN
       END

@@ -173,22 +173,23 @@
 *
 *  --Print to python file for plotting
 *
-         CALL OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP)
+         CALL OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP,KNTOUT)
 *
 *  --Calculate Heat flux at base of fin for grid convergence
 *
-         HEATFLUX = -DE(1)*(T(2) - T(1))     ! Calculate heat flux
-         PRINT *, "HEATFLUX = ", HEATFLUX," W/m^2"    ! Print heat flux 
+*         HEATFLUX = -DE(1)*(T(2) - T(1))     ! Calculate heat flux
+*         PRINT *, "HEATFLUX = ", HEATFLUX," W/m^2"    ! Print heat flux 
 *        
 *  --Calculate temperature gradient across first half of fin (question 2)
 *
-         TEMPGRAD=(T(2)-T(1))/DIEP(1)    ! Calculate gradient  
-         PRINT *, "TEMPGRAD FIRST = ", TEMPGRAD," K/m"   ! Print gradient
+*         TEMPGRAD=(T(2)-T(1))/DIEP(1)    ! Calculate gradient  
+*         PRINT *, "TEMPGRAD FIRST = ", TEMPGRAD," K/m"   ! Print gradient
 *
 *  --Save result to unformatted output file
 *
          CALL SAVE(T,IRSO,IB,IE,ID)
          PRINT *, "Timestep: ", KNTOUT, " Finished"
+         PRINT *, "-----------------"
 *
 *--Continue through Time-Step loop
 *
