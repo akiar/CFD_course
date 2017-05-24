@@ -1,6 +1,6 @@
 *
 *        file coeff.f
-***********************************************************************
+************************************************************************************
 *
       SUBROUTINE COEFF(AP,AW,AE,B,
      C                 DE,Q,R,VOLP,RHO,CP,
@@ -26,7 +26,7 @@
 *     INTEGER IB,IE first and last interior indices in i; input
 *     INTEGER ID array dimensions; input     
 *
-**********************************************************************
+************************************************************************************
 *
 *     Declaration of variables
 *
@@ -37,7 +37,7 @@
       INTEGER IB,IE,ID,   ! first, last interior indices, length of array
      C        I           ! loop integer
 *
-**********************************************************************
+************************************************************************************
 *
 *     Transport coefficient calculations
 *     Assume eqation of the form:
@@ -45,11 +45,11 @@
 *         TW = T(I-1)
 *
       DO 10 I = IB,IE
-          AW(I) = DE(I-1)
-          AE(I) = DE(I)
-          ASUM(I) = AW(I) + AE(I)
-          AP(I) = ASUM(I) - R(I)
-          B(I) = Q(I)
+          AW(I) = DE(I-1)         ! West coefficient = East of previous CV
+          AE(I) = DE(I)           ! East coefficient
+          ASUM(I) = AW(I) + AE(I) ! Total of contact CVs
+          AP(I) = ASUM(I) - R(I)  ! Net coefficient on P 
+          B(I) = Q(I)             ! Fixed source term 
 *
    10 CONTINUE
       RETURN

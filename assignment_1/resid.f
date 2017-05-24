@@ -1,5 +1,6 @@
 *
-***********************************************************************
+*     file resid.f
+************************************************************************************
 *
       SUBROUTINE RESID(RSD,AVRSD, PHI,AP,AW,AE,B,IB,IE,ID)
 *
@@ -17,17 +18,18 @@
 *     INTEGER IB,IE  first and last interior indices in i; input
 *     INTEGER ID  array dimensions; input
 *
-***********************************************************************
+************************************************************************************
 *
 *     Variable Declaration
 *
-      REAL RSD(ID),SUMRSD,AVRSD
-      REAL PHI(ID),AP(ID),AW(ID),AE(ID),B(ID)
-      INTEGER IB,IE
+      REAL RSD(ID),SUMRSD,AVRSD   ! Node residual, running sum, average residual
+      REAL PHI(ID),AP(ID),AW(ID),AE(ID),B(ID) !phi field, coefficients 
+      INTEGER IB,IE   !beginning and end node
 *
-***********************************************************************
+************************************************************************************
 *
 *     Calculate residuals for each CV
+*      Loop over internal nodes and calculate residual, add to running sum SUMRSD
 *
       SUMRSD = 0.0
       DO 10 I=IB,IE   ! loop over all CVs
@@ -35,9 +37,9 @@
           SUMRSD = SUMRSD + ABS(RSD(I))
  10   CONTINUE
 *
-***********************************************************************
+************************************************************************************
 *
-*     Calculate Average residual
+*     Calculate Average residual over the entire volume
 *
       AVRSD = SUMRSD/(IE - IB + 1)
 *      

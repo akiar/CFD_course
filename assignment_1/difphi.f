@@ -19,7 +19,7 @@
 *     Notes: 1) DE is calculated for the e points on
 *               interior control volume faces.
 *
-***********************************************************************
+************************************************************************************
 *
 *     Initialize Variables
 *
@@ -29,12 +29,15 @@
       INTEGER IB,IE,ID,       ! first and last interior indices, array dimensions
      C        I               ! integer for loops
 *     
-***********************************************************************
+************************************************************************************
 *
 *     East Diffusion coefficient calculation
-*     
-      DO 10 I=IB-1,IE                         ! Loop over all internal nodes
-          DE(I) = GAMA * AREP(I) / DIEP(I)    ! Calculate De at each node and assign to I location
+*     Loop over all internal node faces and calculate the diffusion coefficient
+*      based on linear piecewise interpolation
+*
+      DO 10 I=IB-1,IE                         ! Loop over all internal node faces
+          DE(I) = GAMA * AREP(I) / DIEP(I)    ! Calculate De at each node and assign
+                                              ! to I location
    10 CONTINUE
 *
       RETURN

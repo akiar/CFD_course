@@ -1,13 +1,13 @@
 *
 *        file main.f
-*********************************************************************
+************************************************************************************
 *
 *     Course:  MME 9710 - Advanced CFD
 *
 *     Mainline for computations of one-dimensional diffusion 
 *     problems.
 *
-********************************************************************
+************************************************************************************
 *
 *============================
 *  Declaration of Variables
@@ -28,9 +28,8 @@
       INTEGER LVLGEO,LVLCOF,KNTOUT,KNTNL
       REAL DI,RHO,COND,CP,EMIS,VISC,T0,DTIME,CRIT
       REAL HCONV,TINF
-      REAL CRITERIA,HEATFLUX,TEMPGRAD
-      REAL RSD(ID),AVRSD,RESIDUALS(ID)
-      INTEGER CENTERNODE,INTER
+      REAL HEATFLUX,TEMPGRAD              !Grid conv. criteria variables
+      REAL RSD(ID),AVRSD,RESIDUALS(ID)    !Residual variables
 *
 *
 *============================
@@ -86,7 +85,7 @@
 *
       DO 10 M=1,KNTNL
 *
-*--Compute active coefficients for T
+*     --Compute active coefficients for T
 *
         CALL NULL(BT, IB,IE,ID)
         CALL DIFPHI(DE, COND,AREP,DIEP,IB,IE,ID)
@@ -100,12 +99,12 @@
      C             IB,IE,ID)
         PRINT *, "Active Coefficients"
 *
-*--Set boundary conditions
+*     --Set boundary conditions
 *
         CALL BNDCT(ATP,ATW,ATE,BT, DE,AREP,IB,IE,ID,HCONV,TINF)
         PRINT *, "Boundary Conditions"
 *
-*--Check computed, active coefficients (LVLCOF=1 to check)
+*     --Check computed, active coefficients (LVLCOF=1 to check)
 *
         IF (LVLCOF .GE. 1) THEN
           CALL OUT1D(DE,   ' DE     ',IDATO,IB-1, IE  ,1,ID)
@@ -115,15 +114,15 @@
           CALL OUT1D(BT  , ' BT     ',IDATO,IB-1, IE+1,1,ID)
         ENDIF
 *
-*--Calculate Residuals and check convergence
+*     --Calculate Residuals and check convergence
 *
         IF (M > 1) THEN      ! Only calculate residuals if first loop is passed
 *
           CALL RESID(RSD,AVRSD, T,ATP,ATW,ATE,BT,IB,IE,ID) ! use old temperature
           RESIDUALS(M) = ABS(AVRSD)    ! Save all residual calculations
-          PRINT *, "AVERAGE RESIDUAL ",M," = ",ABS(AVRSD)
+          PRINT *, "AVERAGE RESIDUAL ",M," = ",ABS(AVRSD) ! Print avg. residual
 *
-          ! Check if convergence has been met, exit if it has
+          ! Check if convergence has been met, exit loop if it has
 *
           IF (ABS(AVRSD) < CRIT) THEN
             PRINT *, "Convergence Reached"
@@ -131,16 +130,16 @@
           END IF
         END IF
 *
-*--Compute solution using direct solver 
+*     --Compute solution using direct solver if convergence is not met 
 *
         CALL TDMA(T, ATP,ATE,ATW,BT,IB-1,IE+1,WORK1,WORK2,ID) 
         PRINT *, "Solved"
 *
-*--Print final solution
+*     --Print final solution
 *
         CALL OUT1D(T  , ' T      ',IDATO,IB-1, IE+1,1,ID)
 *
-*--Continue through Non-linearity loop
+*     --Continue through Non-linearity loop
 *
  10	  CONTINUE
 *
@@ -148,15 +147,15 @@
 *
       CALL OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP)
 *
-*     QUESTION 1 & 4: Calculate Heat flux at base of fin
+*--Calculate Heat flux at base of fin for grid convergence
 *
-      HEATFLUX = -DE(1)*(T(2) - T(1))
-      PRINT *, "HEATFLUX = ", HEATFLUX,"W/m^2"
+      HEATFLUX = -DE(1)*(T(2) - T(1))     ! Calculate heat flux
+      PRINT *, "HEATFLUX = ", HEATFLUX," W/m^2"    ! Print heat flux 
 *        
-*     QUESTION 2: Calculate temperature gradient across first half of fin
+*--Calculate temperature gradient across first half of fin (question 2)
 *
-      TEMPGRAD=(T(2)-T(1))/DIEP(1)  ! difference between CENTERNODE-1 and center node divided by
-      PRINT *, "TEMPGRAD FIRST = ", TEMPGRAD," K/m"       ! CV length
+      TEMPGRAD=(T(2)-T(1))/DIEP(1)    ! Calculate gradient  
+      PRINT *, "TEMPGRAD FIRST = ", TEMPGRAD," K/m"   ! Print gradient
 *
 *--Save result to unformatted output file
 *

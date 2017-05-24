@@ -1,6 +1,6 @@
 *     
 *        file srct.f
-******************************************************************
+************************************************************************************
 *
       SUBROUTINE SRCT(QT,RT, T,VOLP,ARO,HCONV,TINFC,IB,IE,ID,EMIS)
 *
@@ -17,7 +17,7 @@
 *     NOTE: For solution with radiation, temperature must be
 *           absolute!!!
 *
-************************************************************************
+************************************************************************************
 *
 *     Variable Declaration
       PARAMETER (SBC=5.67E-8)        ! stefan-boltzmann constant for rad.
@@ -33,15 +33,15 @@
 *     Set INTGEN to specified internal heat generation (W/m^3) 
 *     Set LIN to 1,2, or 3 for linearization technique
 *
-      INTGEN = 0          ! set internal CV heat generation (W/m^3). QUESTION 3: INTGEN = 50000
-      LIN = 1             ! choose linearization type: 1, 2, 3 (Newton-raphson)
+      INTGEN = 0      ! set internal heat generation (W/m^3). Q3: INTGEN = 50000
+      LIN = 1         ! choose linearization type: 1, 2, 3 (Newton-raphson)
 *
-************************************************************************
+************************************************************************************
 *
 *     Source term calculation: Loop over all CVs and calculate sources
 *     --Loops will adjust based on heat transfer methods present
-*         -- EMIS = 0 / no radiation
-*         -- HCONV = 0 / no convection
+*         -- EMIS = 0 in.dat / no radiation 
+*         -- HCONV = 0 in.dat / no convection
 *
 *--Begin loop over all CVs
 *
@@ -50,28 +50,28 @@
 *--Linearization 1
 *
         IF (LIN == 1) THEN
-          QT(I) = - EMIS * ARO(I) * SBC *(T(I)**4 - TINFC**4)
-     C            + HCONV * ARO(I) * TINFC
-     C            + INTGEN * VOLP(I)
-          RT(I) = - HCONV * ARO(I) ! Question 3: RT(I) = 0 for only internal generation
+          QT(I) = - EMIS * ARO(I) * SBC *(T(I)**4 - TINFC**4) !Fixed source
+     C            + HCONV * ARO(I) * TINFC                    !Convection source
+     C            + INTGEN * VOLP(I)                          !Internal Gen source
+          RT(I) = - HCONV * ARO(I) ! Linearized Source = 0, only CONV ! Q3: RT(I)=0 
 *
 *--Linearization 2
 *
         ELSE IF  (LIN == 2) THEN
-          QT(I) = EMIS * SBC * ARO(I) * (TINFC**4)
-     C            + HCONV * ARO(I) * TINFC
-     C            + INTGEN * VOLP(I)
-          RT(I) = - EMIS * ARO(I) * SBC * (T(I)**3)
-     C            - HCONV * ARO(I)
+          QT(I) = EMIS * SBC * ARO(I) * (TINFC**4)    !Fixed source
+     C            + HCONV * ARO(I) * TINFC            !Convection source
+     C            + INTGEN * VOLP(I)                  !Internal Gen source
+          RT(I) = - EMIS * ARO(I) * SBC * (T(I)**3) !Linearized Source ! Q3: RT(I)=0 
+     C            - HCONV * ARO(I)                  ! Convection 
 *     
 *--Linearization 3, Newton - Raphson
 *
         ELSE
-          QT(I) = EMIS * ARO(I) * SBC * (3 * (T(I)**4) + TINFC**4)
-     C            + HCONV * ARO(I) * TINFC
-     C            + INTGEN * VOLP(I)
-          RT(I) = - 4 * EMIS * ARO(I) * SBC *(T(I)**3)
-     C            - HCONV * ARO(I)
+          QT(I) = EMIS * ARO(I) * SBC * (3 * (T(I)**4) + TINFC**4) !Fixed source
+     C            + HCONV * ARO(I) * TINFC    !convection source 
+     C            + INTGEN * VOLP(I)          !internal gen source
+          RT(I) = - 4 * EMIS * ARO(I) * SBC *(T(I)**3)    !linearized source
+     C            - HCONV * ARO(I)                        !convection
 *
         END IF
  10   CONTINUE

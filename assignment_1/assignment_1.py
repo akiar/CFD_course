@@ -6,8 +6,8 @@ import os
 import pylab
 import shutil
 
-symbol = ['*', '+', '^', 's', 'o', '>', '<']
-colours = ['k', 'b', 'y', 'g', 'm', 'c', 'r']
+symbol = ['*', '+', '^', 's', 'o', '>', '<', '.']
+colours = ['k', 'b', 'y', 'g', 'm', 'c', 'r', 'k']
 
 def results_1d(question_num):
     # iteration variables
@@ -81,13 +81,13 @@ def results_1d(question_num):
 
 def composite_plots(problem):
     '''Make composites of each mesh with analytic solution'''
-    lin = "1"
+    lin = "3"
     path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_1\\{}\\".format(problem)
 
     composite = plt.figure(figsize=(12,12))
     ax = composite.add_subplot(111)
-    num_cvs = ["1", "2", "4", "8", "16", "32", "64"]
-    converged = "32"
+    num_cvs = ["1", "2", "4", "8", "16", "32", "64"] #, "65"]
+    converged = "4"
 
     for i in range(0, len(num_cvs)):
         results = Table.read(path + "output_linearization_"+lin+"_CV_"+num_cvs[i]+"_output.txt",
@@ -108,12 +108,12 @@ def composite_plots(problem):
     ax.set_xlabel('x position [m]', fontweight='bold', fontsize=14)
     ax.set_ylabel('T(x) [K]', fontweight='bold', fontsize=14)
 
-    file_name = "composite_{}".format(problem)
+    file_name = "composite_{}_lin{}".format(problem, lin)
     pylab.savefig(os.path.join(path, file_name))
     plt.show()
     plt.close()
 
-    if problem != "problem_1":  
+    if problem != "problem_4":  
         analytic = Table.read(path + "analytic.txt",
                               format="ascii.commented_header", guess=False)
         analytic_plot = plt.figure(figsize=(12,12))
@@ -126,5 +126,11 @@ def composite_plots(problem):
         ax1.plot(analytic["XP"], analytic["T"], color='k',
                  label="Analytic Solution")
         ax1.legend(loc='lower left', fontsize=14, scatterpoints=1)
+        ax1.set_xlabel('x position [m]', fontweight='bold', fontsize=14)
+        ax1.set_ylabel('T(x) [K]', fontweight='bold', fontsize=14)
+        file_name = "analytic_{}_lin{}".format(problem, lin)
+        pylab.savefig(os.path.join(path, file_name))
+        plt.show()
+        plt.close()
         
     return ()
