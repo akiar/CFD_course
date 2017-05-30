@@ -2,8 +2,8 @@
 *        file srct.f
 ************************************************************************************
 *
-      SUBROUTINE SRCT(QT,RT, T,VOLP,ARO,HCONV,TINFC,IB,IE,ID,EMIS,OMEG,
-     C                DEOLD,TOLD)
+      SUBROUTINE SRCT(QT,RT, T,VOLP,ARO,HCONV,TINFC,IB,IE,ID,EMIS,
+     C                OMEG,DEOLD,TOLD)
 *
 *     Subroutine to calculate the net source of T in each interior
 *     control volume/ unit volume.
@@ -29,15 +29,12 @@
      C     OMEG,DEOLD(ID),TOLD(ID)
       INTEGER IB,IE,ID,              ! Inputs
      C        I
-*     C        LIN! loop integer, linearization type
 *
-*--Linearization and heat generation flags
+*--Heat generation flag
 *
 *     Set INTGEN to specified internal heat generation (W/m^3) 
-*     Set LIN to 1,2, or 3 for linearization technique
 *
-      INTGEN = 0      ! set internal heat generation (W/m^3). Q3: INTGEN = 50000
-*     LIN = 1         ! choose linearization type: 1, 2, 3 (Newton-raphson)
+      INTGEN = 0      ! set internal heat generation (W/m^3)
 *
 ************************************************************************************
 *
@@ -49,35 +46,17 @@
 *--Begin loop over all CVs
 *
       DO 10 I=IB,IE
-*     
+*
 *--Newton - Raphson Linearization
 *
           QT(I) = EMIS * ARO(I) * SBC * (3 * (T(I)**4) + TINFC**4) !Fixed source
-     C            + HCONV * ARO(I) * TINFC    !convection source 
-     C            + INTGEN * VOLP(I)          !internal gen source
-     C            + (1-OMEG)*(DEOLD(I)*(TOLD(I+1)-TOLD(I))
+     C            + HCONV * ARO(I) * TINFC                    !convection source 
+     C            + INTGEN * VOLP(I)                          !internal gen source
+     C            + (1-OMEG)*(DEOLD(I)*(TOLD(I+1)-TOLD(I))    ! Transient Term
      C                        -DEOLD(I-1)*(TOLD(I)-TOLD(I-1)))
+
           RT(I) = - 4 * EMIS * ARO(I) * SBC *(T(I)**3)    !linearized source
      C            - HCONV * ARO(I)                        !convection
-*
-*
-*--Linearization 1
-*
-*        IF (LIN == 1) THEN
-*          QT(I) = - EMIS * ARO(I) * SBC *(T(I)**4 - TINFC**4) !Fixed source
-*     C            + HCONV * ARO(I) * TINFC                    !Convection source
-*     C            + INTGEN * VOLP(I)                          !Internal Gen source
-*     C            + (1 - OMEG) * 
-*          RT(I) = - HCONV * ARO(I) ! Linearized Source = 0, only CONV ! Q3: RT(I)=0 
-*
-*--Linearization 2
-*
-*        ELSE IF  (LIN == 2) THEN
-*          QT(I) = EMIS * SBC * ARO(I) * (TINFC**4)    !Fixed source
-*     C            + HCONV * ARO(I) * TINFC            !Convection source
-*     C            + INTGEN * VOLP(I)                  !Internal Gen source
-*          RT(I) = - EMIS * ARO(I) * SBC * (T(I)**3) !Linearized Source ! Q3: RT(I)=0 
-*     C            - HCONV * ARO(I)                  ! Convection 
 *
  10   CONTINUE
 *

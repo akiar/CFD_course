@@ -50,15 +50,7 @@
           AE(I) = OMEG*DE(I)                          ! East coefficient
           ASUM(I) = AW(I) + AE(I)                     ! Total of contact CVs
           AP(I) = ASUM(I) + VOLP(I)*RHO/DTIME - R(I)  ! Net coefficient on P 
-          B(I) = Q(I) + VOLP(I)*RHO*PHI(I)/DTIME     ! Fixed source term 
-*          IF (I==IB) THEN
-*              AW(I) = AE(I-1)
-*              AE(I) = OMEG*DE(I)
-*              ASUM(I) = AW(I) + AE(I)
-*              AP(I)=ASUM(I)+VOLP(I)*RHO/DTIME-R(I)-AW(I)*AE(I-1)/AP(I-1)
-*              B(I)=Q(I)+VOLP(I)*RHO*PHI(I)/DTIME+AW(I)*B(I-1)/AP(I-1)
-*          ENDIF
-*
+          B(I) = Q(I) + VOLP(I)*RHO*PHI(I)/DTIME      ! Fixed source term 
    10 CONTINUE
       RETURN
       END

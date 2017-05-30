@@ -19,7 +19,7 @@
 *
 *     Variable Declaration
 *
-      REAL DE(ID),ATP(ID),ATW(ID),ATE(ID),BT(ID),HCONV,AREP(ID)
+      REAL DE(ID),ATP(ID),ATW(ID),ATE(ID),BT(ID),HCONV,AREP(ID),TINF
       INTEGER IB,IE,ID
 *
 ************************************************************************************
@@ -36,22 +36,22 @@
 *                         BP = HCONV*AREP(IB-1)*TINFC
 *
       ATW(IB-1) = 0
-      ATE(IB-1) = DE(IB-1) ! QUESTION 3 CONDITION
-      ATP(IB-1) = 1 * AREP(IB-1) + DE(IB-1) ! QUESTION 3 CONDITION
-      BT(IB-1) = 0 ! HCONV * AREP(IB-1) * 323.15 ! QUESTION 3 CONDITION
+      ATE(IB-1) = 1
+      ATP(IB-1) = 1
+      BT(IB-1) = 0
 *
 *     End Node + 1
 *      Node that has zero volume and only contains boundary information
 *
 *     Dirichlet:  AW = 0, AE = 0, AP = 1, BP = Tspec
 *     Neumann:    AW = 1, AE = 0, AP = 1, BP = -Qspec/DE(IE)
-*     Robin:      AW = 0, AE = DE(IE),  AP = HCONV*AREP(IE) + DE(IE),
+*     Robin:      AW = DE(IE), AE = 0,  AP = HCONV*AREP(IE) + DE(IE),
 *                         BP = HCONV*AREP(IE)*TINFC
 *
-      ATW(IE+1) = 0 ! QUESTION 3 CONDITION
-      ATE(IE+1) = DE(IE)
-      ATP(IE+1) = 1 * AREP(IE) + DE(IE) ! QUESTION 3 CONDITION
-      BT(IE+1) = 0 ! HCONV * AREP(IE) * 313.15 ! QUESTION 3 CONDITION
+      ATW(IE+1) = DE(IE)
+      ATE(IE+1) = 0
+      ATP(IE+1) = 1 * AREP(IE) + DE(IE)
+      BT(IE+1) = 1 * AREP(IE) * TINF
 *     
       RETURN
       END

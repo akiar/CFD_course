@@ -28,11 +28,10 @@
       INTEGER LVLGEO,LVLCOF,KNTOUT,KNTNL
       REAL DI,RHO,COND,CP,EMIS,VISC,T0,DTIME,CRIT
       REAL HCONV,TINF
-      REAL HEATFLUX,TEMPGRAD              !Grid conv. criteria variables
       REAL RSD(ID),AVRSD,RESIDUALS(ID)    !Residual variables
       INTEGER O
-*
-*
+      REAL TEND(ID),ERROR(ID),SUMERR      !TEND: Ending analytic temp for error calc.
+*                                         !ERROR(ID): Error variable for each CV
 *============================
 *  Initialization and input
 *============================
@@ -75,14 +74,24 @@
          CALL OUT1D(VOLP,' VOLP   ',IDATO,IB-1,IE+1,1,ID)
       END IF
 *
-*--Initialize T field
+*--Initialize T AND DE fields
 *
       CALL INITAL(T, T0,IRSI,IB,IE,ID)
       ! Reset initial field
+*
       DO 1000 I=IB-1,IE+1
-         T(I) = TINF+(100-TINF)*1.1191*
-     C          EXP(-(0.8603**2)*0.4535)*COS(0.8603*(XP(I)-1)) ! + 273.15 ! Set initial condition
+         T(I) = TINF+(100-TINF)*1.1191*   !INITIALIZE TEMP. WITH ANALYTIC
+     C          EXP(-(0.8603**2)*0.4535)*COS(0.8603*XP(I))
+         TEND(I) = TINF+(100-TINF)*1.1191*    !ENDING ANALYTIC FOR ERROR
+     C          EXP(-(0.8603**2)*3.2632)*COS(0.8603*XP(I))
+         TOLD(I) = T(I)
+         IF (I <= IE) THEN
+            DEOLD(I) = COND / CP * AREP(I) / DIEP(I)
+         ENDIF
  1000 CONTINUE
+*
+      KNTOUT = 0
+      CALL OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP,KNTOUT)
 *
 *--Print initialized field
 *
@@ -90,35 +99,22 @@
 *
 *--Begin time-step loop
 *
-      DO 2000 KNTOUT=0,KNTTM
-*
-*     --Save TOLD
-*
-         DO 10 O=IB-1,IE+1
-           TOLD(O) = T(O)
- 10      CONTINUE           
+      DO 2000 KNTOUT=1,KNTTM
 *
 *  --Begin non-linear loop
 *
-         DO 100 M=1,KNTNL
+         DO 200 M=1,KNTNL
 *
 *     --Compute Diffusion coefficients 
 *
            CALL NULL(BT, IB,IE,ID)
            CALL DIFPHI(DE, COND/CP,AREP,DIEP,IB,IE,ID)
 *
-*     --Save DEOLD
-*
-           DO 20 O=IB-1,IE
-              DEOLD(O) = DE(O)
- 20        CONTINUE   
-           PRINT *, "Diffusion Coefficients, TOLD, DEOLD"
-*
 *     --Compute Sources and active coefficients
 *
            CALL SRCT(QT,RT, T,VOLP,ARO,HCONV,TINF,IB,IE,ID,
      C               EMIS,
-     C               OMEG,DEOLD,TOLD)
+     C               OMEG,DEOLD,TOLD) 
            PRINT *, "Source terms"
 *
            CALL COEFF(ATP,ATW,ATE,BT,
@@ -169,21 +165,11 @@
 *
 *     --Continue through Non-linearity loop
 *
- 100     CONTINUE
+ 200     CONTINUE
 *
 *  --Print to python file for plotting
 *
          CALL OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP,KNTOUT)
-*
-*  --Calculate Heat flux at base of fin for grid convergence
-*
-*         HEATFLUX = -DE(1)*(T(2) - T(1))     ! Calculate heat flux
-*         PRINT *, "HEATFLUX = ", HEATFLUX," W/m^2"    ! Print heat flux 
-*        
-*  --Calculate temperature gradient across first half of fin (question 2)
-*
-*         TEMPGRAD=(T(2)-T(1))/DIEP(1)    ! Calculate gradient  
-*         PRINT *, "TEMPGRAD FIRST = ", TEMPGRAD," K/m"   ! Print gradient
 *
 *  --Save result to unformatted output file
 *
@@ -191,9 +177,33 @@
          PRINT *, "Timestep: ", KNTOUT, " Finished"
          PRINT *, "-----------------"
 *
+*     --Save TOLD AND DEOLD   ! MOVED FROM THE VERY TOP OF THIS LOOP
+*
+         IF (KNTOUT > 1) THEN
+            DO 100 O=IB-1,IE+1
+               TOLD(O) = T(O)
+               IF (O <= IE) THEN
+                  DEOLD(O) = DE(O)
+               ENDIF
+ 100        CONTINUE
+         ENDIF
+*
 *--Continue through Time-Step loop
 *
  2000 CONTINUE
+*
+*--Calculuate average error of last time step
+*
+      SUMERR = 0.0 
+      DO 3000 I=IB,IE
+         ERROR(I) = TEND(I) - T(I)
+         SUMERR = SUMERR + ABS(ERROR(I))
+ 3000 CONTINUE
+      ERRBAR = SUMERR / (1 + IE - IB)
+      PRINT *, "================="
+      PRINT *, "AVERAGE ERROR, FINAL STEP = ", ERRBAR, " K"
+      PRINT *, "================="
+*      
       STOP
       END
 *
