@@ -61,58 +61,36 @@ def results_1d(question_num):
     
     return
 
-def composite_plots(problem):
+def composite_plots():
     '''Make composites of each mesh with analytic solution'''
-    lin = "3"
-    path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_2\\{}\\".format(problem)
+    path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_2\\results\\"
 
     composite = plt.figure(figsize=(12,12))
     ax = composite.add_subplot(111)
-    num_cvs = ["1", "2", "4", "8", "16", "32", "64"] #, "65"]
-    converged = "4"
+    num_ts = ["2", "4", "8", "16", "32"] 
+    analytic_start = Table.read(path + "analytic_start.txt",
+                                format="ascii.commented_header", guess=False)
+    analytic_end = Table.read(path + "analytic_end.txt",
+                              format="ascii.commented_header", guess=False)
+    ax.plot(analytic_start["XP"], analytic_start["T"], color='k',
+            label="Initialized Analytic")
+    ax.plot(analytic_end["XP"], analytic_end["T"], color='r',
+            label="End Analytic t*")
 
-    for i in range(0, len(num_cvs)):
-        results = Table.read(path + "output_linearization_"+lin+"_CV_"+num_cvs[i]+"_output.txt",
-                            format='ascii.commented_header', guess=False)
-        if i==0:
-            legend = num_cvs[i]+" CV"
-        else:
-            legend = num_cvs[i]+" CVs"
+    for i in range(0, len(num_ts)):
+        results = Table.read(path + num_ts[i] + "_ts_final.txt",
+                             format='ascii.commented_header', guess=False)
+        legend = num_ts[i]+" Time steps"
+        ax.scatter(results['XP'], results['T'], color=colours[i],
+                   marker=symbol[i], s=700/((i+1)*5), label=legend)
 
-        if num_cvs[i] == converged:
-            ax.plot(results['XP'], results['T'], color=colours[i],
-                    label=legend+", Converged")
-        else:
-            ax.scatter(results['XP'], results['T'], color=colours[i],
-                       marker=symbol[i], s=700/((i+1)*5), label=legend)
+    ax.legend(loc='upper right', fontsize=12, scatterpoints=1)
+    ax.set_xlabel('x*', fontweight='bold', fontsize=14)
+    ax.set_ylabel('T(x, t) [C]', fontweight='bold', fontsize=14)
 
-    ax.legend(loc='lower left', fontsize=14, scatterpoints=1)
-    ax.set_xlabel('x position [m]', fontweight='bold', fontsize=14)
-    ax.set_ylabel('T(x) [K]', fontweight='bold', fontsize=14)
-
-    file_name = "composite_{}_lin{}".format(problem, lin)
+    file_name = "composite_plot"
     pylab.savefig(os.path.join(path, file_name))
     plt.show()
     plt.close()
-
-    if problem != "problem_4":  
-        analytic = Table.read(path + "analytic.txt",
-                              format="ascii.commented_header", guess=False)
-        analytic_plot = plt.figure(figsize=(12,12))
-        ax1 = analytic_plot.add_subplot(111)
-        converged_data = Table.read(path + "output_linearization_"+lin+"_CV_"+converged+"_output.txt",
-                                    format='ascii.commented_header', guess=False)
-
-        ax1.scatter(converged_data["XP"], converged_data["T"], marker='o',
-                    color='b', s=50, label=converged+" CVs, Converged Solution")
-        ax1.plot(analytic["XP"], analytic["T"], color='k',
-                 label="Analytic Solution")
-        ax1.legend(loc='lower left', fontsize=14, scatterpoints=1)
-        ax1.set_xlabel('x position [m]', fontweight='bold', fontsize=14)
-        ax1.set_ylabel('T(x) [K]', fontweight='bold', fontsize=14)
-        file_name = "analytic_{}_lin{}".format(problem, lin)
-        pylab.savefig(os.path.join(path, file_name))
-        plt.show()
-        plt.close()
         
     return ()

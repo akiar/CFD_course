@@ -29,7 +29,7 @@
       REAL DI,RHO,COND,CP,EMIS,VISC,T0,DTIME,CRIT
       REAL HCONV,TINF
       REAL RSD(ID),AVRSD,RESIDUALS(ID)    !Residual variables
-      INTEGER O
+      INTEGER J
       REAL TEND(ID),ERROR(ID),SUMERR      !TEND: Ending analytic temp for error calc.
 *                                         !ERROR(ID): Error variable for each CV
 *============================
@@ -100,6 +100,17 @@
 *--Begin time-step loop
 *
       DO 2000 KNTOUT=1,KNTTM
+*
+*  --Set TOLD and DEOLD
+*
+****Get all NANs if I leave the loop like this - if I add if statement I get wrong w=1 behavior, move to the end wrong distributions but right behavior. 
+         DO 100 J=IB-1,IE+1
+            TOLD(J) = T(J)
+            IF (J <= IE) THEN
+              DEOLD(J) = DE(J)
+            ENDIF
+ 100     CONTINUE
+         PRINT *, TOLD
 *
 *  --Begin non-linear loop
 *
@@ -176,17 +187,6 @@
          CALL SAVE(T,IRSO,IB,IE,ID)
          PRINT *, "Timestep: ", KNTOUT, " Finished"
          PRINT *, "-----------------"
-*
-*     --Save TOLD AND DEOLD   ! MOVED FROM THE VERY TOP OF THIS LOOP
-*
-         IF (KNTOUT > 1) THEN
-            DO 100 O=IB-1,IE+1
-               TOLD(O) = T(O)
-               IF (O <= IE) THEN
-                  DEOLD(O) = DE(O)
-               ENDIF
- 100        CONTINUE
-         ENDIF
 *
 *--Continue through Time-Step loop
 *

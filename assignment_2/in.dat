@@ -9,12 +9,12 @@
 +1.00000E-03   VISC (N s/m): viscosity
 +0.00000E+00   EMIS: emmisivity of surfaces (set to 0 for no radiation)
 +10.0000E+01   T0 : Initialized temperature
-0.090635E+00   DTIME (s) : Time step
-00032          KNTMM : Maximum number of time steps
+2.809700E+00   DTIME (s) : Time step
+00002          KNTMM : Maximum number of time steps
 00100          KNTNL : Maximum number of non-linear iterations
 +1.00000E-05   CRIT : Convergence criteria for non-linearities
 00001          LVLGEO =1 OUTPUT GEOMETRY, = 0 NO GEOMETRY OUTPUT
 00001          LVLCOF=0 NONE,1 FINAL,2 BEFORE ELIM.,3 COEFF., 4 ALL
 0.000000E+00   HCONV[W/M**2-K]. Convective heat transfer coefficient.(1D)
 0.000000E+00   TINF. Ambient temperature.(1D)
-0.500000E+00   OMEG : time disc. method		
+1.000000E+00   OMEG : time disc. method		
