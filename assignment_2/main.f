@@ -29,9 +29,9 @@
       REAL DI,RHO,COND,CP,EMIS,VISC,T0,DTIME,CRIT
       REAL HCONV,TINF
       REAL RSD(ID),AVRSD,RESIDUALS(ID)    !Residual variables
-      INTEGER J
       REAL TEND(ID),ERROR(ID),SUMERR      !TEND: Ending analytic temp for error calc.
 *                                         !ERROR(ID): Error variable for each CV
+*                                         !SUMERR: Used for avg. error calculation
 *============================
 *  Initialization and input
 *============================
@@ -79,16 +79,19 @@
       CALL INITAL(T, T0,IRSI,IB,IE,ID)
       ! Reset initial field
 *
+*--Reset initialized Temperature field to the first analytic dimensionless time
+*     -- Initialize the ending analytic distribution
+*
       DO 1000 I=IB-1,IE+1
          T(I) = TINF+(100-TINF)*1.1191*   !INITIALIZE TEMP. WITH ANALYTIC
      C          EXP(-(0.8603**2)*0.4535)*COS(0.8603*XP(I))
          TEND(I) = TINF+(100-TINF)*1.1191*    !ENDING ANALYTIC FOR ERROR
      C          EXP(-(0.8603**2)*3.2632)*COS(0.8603*XP(I))
-         TOLD(I) = T(I)
-         IF (I <= IE) THEN
-            DEOLD(I) = COND / CP * AREP(I) / DIEP(I)
-         ENDIF
  1000 CONTINUE
+*
+*--Initialize DE field
+*
+      CALL DIFPHI(DE, COND/CP,AREP,DIEP,IB,IE,ID)
 *
       KNTOUT = 0
       CALL OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP,KNTOUT)
@@ -97,41 +100,37 @@
 *
       CALL OUT1D(T  ,'T(init)',IDATO,IB-1,IE+1,1,ID)
 *
-*--Begin time-step loop
+*--Begin time loop
 *
       DO 2000 KNTOUT=1,KNTTM
 *
 *  --Set TOLD and DEOLD
 *
-****Get all NANs if I leave the loop like this - if I add if statement I get wrong w=1 behavior, move to the end wrong distributions but right behavior. 
-         DO 100 J=IB-1,IE+1
-            TOLD(J) = T(J)
-            IF (J <= IE) THEN
-              DEOLD(J) = DE(J)
-            ENDIF
+         DO 100 I=IB-1,IE+1
+            TOLD(I) = T(I)
+            DEOLD(I) = DE(I)
  100     CONTINUE
-         PRINT *, TOLD
 *
 *  --Begin non-linear loop
 *
-         DO 200 M=1,KNTNL
+         DO 1700 M=1,KNTNL
 *
 *     --Compute Diffusion coefficients 
 *
            CALL NULL(BT, IB,IE,ID)
-           CALL DIFPHI(DE, COND/CP,AREP,DIEP,IB,IE,ID)
+           CALL DIFPHI(DE, COND/CP,AREP,DIEP,IB,IE,ID)    !Pass Cond/Cp
 *
 *     --Compute Sources and active coefficients
 *
            CALL SRCT(QT,RT, T,VOLP,ARO,HCONV,TINF,IB,IE,ID,
      C               EMIS,
-     C               OMEG,DEOLD,TOLD) 
+     C               OMEG,DEOLD,TOLD) !OMEG for discretization method
            PRINT *, "Source terms"
 *
            CALL COEFF(ATP,ATW,ATE,BT,
      C                DE,QT,RT,VOLP,RHO,CP,
      C                IB,IE,ID,
-     C                OMEG,DTIME,TOLD)
+     C                OMEG,DTIME,TOLD) !OMEG for discretization method
            PRINT *, "Active Coefficients"
 *
 *     --Set boundary conditions
@@ -176,7 +175,7 @@
 *
 *     --Continue through Non-linearity loop
 *
- 200     CONTINUE
+ 1700     CONTINUE
 *
 *  --Print to python file for plotting
 *

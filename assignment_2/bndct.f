@@ -38,7 +38,7 @@
       ATW(IB-1) = 0
       ATE(IB-1) = 1
       ATP(IB-1) = 1
-      BT(IB-1) = 0
+      BT(IB-1) = 0    ! Neumann for no heat flux through plane of symmetry
 *
 *     End Node + 1
 *      Node that has zero volume and only contains boundary information
@@ -50,8 +50,8 @@
 *
       ATW(IE+1) = DE(IE)
       ATE(IE+1) = 0
-      ATP(IE+1) = 1 * AREP(IE) + DE(IE)
-      BT(IE+1) = 1 * AREP(IE) * TINF
+      ATP(IE+1) = 1 * AREP(IE) + DE(IE)   
+      BT(IE+1) = 1 * AREP(IE) * TINF  ! Convection on end, use dimensionless HCONV
 *     
       RETURN
       END

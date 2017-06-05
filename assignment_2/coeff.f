@@ -46,11 +46,11 @@
 *         TW = T(I-1)
 *
       DO 10 I = IB,IE
-          AW(I) = OMEG*DE(I-1)                        ! West coefficient = East of previous CV
+          AW(I) = OMEG*DE(I-1)                        ! West  = East of previous CV
           AE(I) = OMEG*DE(I)                          ! East coefficient
           ASUM(I) = AW(I) + AE(I)                     ! Total of contact CVs
-          AP(I) = ASUM(I) + VOLP(I)*RHO/DTIME - R(I)  ! Net coefficient on P 
-          B(I) = Q(I) + VOLP(I)*RHO*PHI(I)/DTIME      ! Fixed source term 
+          AP(I) = ASUM(I) + VOLP(I)*RHO/DTIME - R(I)  ! Net on P, with Transient
+          B(I) = Q(I) + VOLP(I)*RHO*PHI(I)/DTIME      ! Fixed source with Transient
    10 CONTINUE
       RETURN
       END

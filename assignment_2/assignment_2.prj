@@ -74,6 +74,7 @@
       "External Console":"false",
       "Keep Console":"true",
       "Build Before Launch":"true",
+      "Executable":"",
       "Working Directory":""
     },
     "Build Options":{

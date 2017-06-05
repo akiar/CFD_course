@@ -42,6 +42,7 @@
 *     --Loops will adjust based on heat transfer methods present
 *         -- EMIS = 0 in.dat / no radiation 
 *         -- HCONV = 0 in.dat / no convection
+*         -- OMEG will change transient discretiztion method, affecting QT
 *
 *--Begin loop over all CVs
 *
@@ -52,11 +53,12 @@
           QT(I) = EMIS * ARO(I) * SBC * (3 * (T(I)**4) + TINFC**4) !Fixed source
      C            + HCONV * ARO(I) * TINFC                    !convection source 
      C            + INTGEN * VOLP(I)                          !internal gen source
-     C            + (1-OMEG)*(DEOLD(I)*(TOLD(I+1)-TOLD(I))    ! Transient Term
+     C            + (1-OMEG)*(DEOLD(I)*(TOLD(I+1)-TOLD(I))    !Transient Term
      C                        -DEOLD(I-1)*(TOLD(I)-TOLD(I-1)))
 
           RT(I) = - 4 * EMIS * ARO(I) * SBC *(T(I)**3)    !linearized source
      C            - HCONV * ARO(I)                        !convection
+*	                                                      !No trasient effect
 *
  10   CONTINUE
 *

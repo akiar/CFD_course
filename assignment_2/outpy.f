@@ -30,16 +30,16 @@
           DO 10 I=IB-1,IE+1                       ! Loop over all control volumes
               WRITE(IDATOP,7000) I,XP(I),T(I),DE(I),ATW(I),ATP(I),BT(I)   !print information
  10       CONTINUE
- 7000     FORMAT(' ',I5,' ',F10.5,' ',F10.5,      ! Set format
-     C           ' ',F10.5,' ',F10.5,
-     C           ' ',F10.5,' ',F10.5)
+ 7000     FORMAT(' ',I5,' ',F12.4,' ',F12.4,      ! Set format
+     C           ' ',F12.4,' ',F12.4,
+     C           ' ',F12.4,' ',F12.4)
       ELSE
           DO 20 I=IB-1,IE+1                       ! Loop over all control volumes
               WRITE(IDATOP,7010) I,XP(I),T(I),DE(I),ATW(I),ATP(I),BT(I)   !print information
  20       CONTINUE
- 7010     FORMAT(' ',I5,' ',F10.5,' ',F10.5,      ! Set format
-     C           ' ',F10.5,' ',F10.5,
-     C           ' ',F10.5,' ',F10.5)
+ 7010     FORMAT(' ',I5,' ',F12.4,' ',F12.4,      ! Set format
+     C           ' ',F12.4,' ',F12.4,
+     C           ' ',F12.4,' ',F12.4)
       ENDIF
       RETURN
       END

@@ -61,7 +61,7 @@ def results_1d(question_num):
     
     return
 
-def composite_plots():
+def composite_plots(method):
     '''Make composites of each mesh with analytic solution'''
     path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_2\\results\\"
 
@@ -72,13 +72,15 @@ def composite_plots():
                                 format="ascii.commented_header", guess=False)
     analytic_end = Table.read(path + "analytic_end.txt",
                               format="ascii.commented_header", guess=False)
-    ax.plot(analytic_start["XP"], analytic_start["T"], color='k',
-            label="Initialized Analytic")
+
     ax.plot(analytic_end["XP"], analytic_end["T"], color='r',
             label="End Analytic t*")
+    if method == "imp": 
+        ax.plot(analytic_start["XP"], analytic_start["T"], color='k',
+                label="Initialized Analytic")
 
     for i in range(0, len(num_ts)):
-        results = Table.read(path + num_ts[i] + "_ts_final.txt",
+        results = Table.read(path + num_ts[i] + "_ts_final_"+method+".txt",
                              format='ascii.commented_header', guess=False)
         legend = num_ts[i]+" Time steps"
         ax.scatter(results['XP'], results['T'], color=colours[i],
@@ -88,9 +90,42 @@ def composite_plots():
     ax.set_xlabel('x*', fontweight='bold', fontsize=14)
     ax.set_ylabel('T(x, t) [C]', fontweight='bold', fontsize=14)
 
-    file_name = "composite_plot"
+    file_name = "composite_plot_{}".format(method)
     pylab.savefig(os.path.join(path, file_name))
     plt.show()
     plt.close()
         
     return ()
+    
+def final_temp():
+    path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_2\\results\\"
+
+    final_plt = plt.figure(figsize=(12,12))
+    ax = final_plt.add_subplot(111)
+    num_ts = ["2", "4", "8", "16", "32"]
+    imp_final = [19.22635, 14.9879, 12.59924, 11.32753, 10.67393]
+    cn_final = [8.0186, 9.52, 9.8809, 9.9725, 9.9938]
+    analytic_end = [10, 10, 10, 10, 10]
+
+    ax.scatter(num_ts, imp_final, color='r', marker='*', s=100,
+               label="Final Implicit Center Temperatures")
+    ax.scatter(num_ts, cn_final, color='b', marker='*', s=100,
+               label="Final Crank-Nicolson Center Temperatures")
+    ax.plot(num_ts, analytic_end, color='k',
+            label="Final Analytic Center Temperatures")
+    
+    ax.legend(loc='lower right', fontsize=12, scatterpoints=1)
+    ax.set_xlabel('Number of Time-steps', fontweight='bold', fontsize=14)
+    ax.set_ylabel('Final Center Temperature', fontweight='bold', fontsize=14)
+    
+    file_name = "end_temp_plot"
+    pylab.savefig(os.path.join(path, file_name))
+    plt.show()
+    plt.close()
+    return
+    
+    
+    
+    
+    
+    
