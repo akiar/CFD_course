@@ -31,7 +31,8 @@
       REAL RSD(ID),AVRSD,RESIDUALS(ID)    !Residual variables
       REAL TEND(ID),ERROR(ID),SUMERR
       REAL U(ID),U0,UHE(ID),UHE0,P(ID),P0 !New initialization variables
-*                                         ! for flow field
+      REAL ACUE(ID),ACUW(ID),BC(ID)       ! for flow field
+      INTEGER ADVSCM                      ! Advection scheme
       REAL DCCE(ID)                       ! deferred correction array
       REAL ME(ID),ALFAE(ID)               ! Advection properties
 *============================
@@ -47,7 +48,7 @@
      C           T0,DTIME,KNTTM,KNTNL,CRIT,
      C           LVLGEO,LVLCOF,HCONV,TINF,IDATI,
      C           OMEG,
-     C           U0,UHE0)
+     C           U0,UHE0,ADVSCM)
       CALL ECHO(IB,IE,IDTYP,DI,
      C          RHO,COND,CP,VISC,EMIS,
      C          T0,DTIME,KNTTM,KNTNL,CRIT,
@@ -114,10 +115,10 @@
 *
          DO 1700 M=1,KNTNL
 *
-*     --Compute Diffusion coefficients 
+*     --Compute Diffusion coefficients
 *
            CALL NULL(BT, IB,IE,ID)
-           CALL DIFPHI(DE, COND/CP,AREP,DIEP,IB,IE,ID)    !Pass Cond/Cp
+           CALL DIFPHI(DE, COND/CP,AREP,DIEP,IB,IE,ID)
            PRINT *, "DIFPHI"
 *
 *     --Compute mass flux through east face
@@ -128,14 +129,13 @@
 *
 *     --Compute convective weighting factors on east face
 *
-           CALL WEIGHT(ALFAE, ME,DE,IB,IE,ID,
-     C                 COND,RHO,CP)
+           CALL WEIGHT(ALFAE, ME,DE,IB,IE,ID)
            PRINT *, "WEIGHT"
 *
 *     --Compute advection correction terms
 *
            CALL HOCONV(DCCE, ADVSCM,IB,IE,ID,DE,T,QT,RT,RHO,VOLP,
-     C                 ME)
+     C                 ME,ALFAE,UHE,DIEP,DISE)
            PRINT *, "HOCONV"
 *
 *     --Compute Sources and active coefficients

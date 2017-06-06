@@ -2,8 +2,8 @@
 *     file hoconv.f
 **********************************************************************
 *
-      SUBROUTINE HOCONV(DCCE, ADVSCM,IB,IE,ID,DE,T,QT,RT,RHO,VOLP,DIEP
-     C                  ME,ALFAE,UHE)
+      SUBROUTINE HOCONV(DCCE, ADVSCM,IB,IE,ID,DE,T,QT,RT,RHO,
+     C                  ME,ALFAE,DIEP,DISE)
 *
 *     Routine to calculate deferred corrections on convection based
 *     on the selection of a higher order convection scheme.
@@ -12,14 +12,13 @@
 *
 **********************************************************************
 *
-      REAL DCCE(ID),DE(ID),T(ID),QT(ID),RT(ID),ME(ID),ALFAE(ID),UHE(ID)
-      REAL THOS,PAC,PACP,PACE,RHO,VOLP(ID),DIEP(ID),BETA
+      REAL DCCE(ID),DE(ID),T(ID),QT(ID),RT(ID),ME(ID),ALFAE(ID)
+      REAL THOS,RHO,DIEP(ID),BETA,DISE(ID)
       INTEGER ADVSCM,IB,IE,ID
 *
-*     -- SET ADVECTION SCHEME
+*     -- SET BLENDING FACTOR
 *
-      ADVSCM = 3
-      BETA = 1
+      BETA = 1.0
 *
 *----------------------------
 * UDS Scheme
@@ -28,6 +27,8 @@
       IF(ADVSCM == 1) THEN
 *
         CALL NULL(DCCE, IB,IE,ID)
+        DCCE(IB-1) = 0    ! Set beginning and end conditions
+        DCCE(IE+1) = 0
         PRINT *, "UDS"
 *
 *----------------------------
@@ -40,31 +41,30 @@
 *     PAC Scheme - reduces to CDS
 *
         PRINT *, "CDS"
+        DCCE(IB-1) = 0
         DO 10 I=IB,IE
-*          PACP = (DE(I)*(T(I+1)-T(I))-DE(I-1)*(T(I)-T(I-1))
-*     C              +QT(I)+RT(I)*T(I))/(RHO*VOLP(I))
-*          PACE = (DE(I+1)*(T(I+2)-T(I+1))-DE(I)*(T(I+1)-T(I))
-*     C               +QT(I+1)+RT(I+1)*T(I+1))/(RHO*VOLP(I))
-*          PAC = 0.5 * (PACP + PACE)
           THOS = 0.5*(T(I)+T(I+1))
           DCCE(I) = BETA*(ME(I)*THOS-ME(I)*T(I))
-          PRINT *, DCCE(I)
 *
  10	    CONTINUE
+        DCCE(IE+1) = 0
 *
       ELSEIF(ADVSCM == 3) THEN
 *
 *     QUICK scheme
 *
         PRINT *, "QUICK"
-        DO 20 I=IB,IE
-*          THOS=DIEP(I)*DIEP(I)/4/(DIEP(I-1)*(DIEP(I)+DIEP(I-1)))*T(I-1)
-*     C         +(DIEP(I-1)+DIEP(I)/2)*DIEP(I)/2/(DIEP(I-1)*DIEP(I))*T(I)
-*     C         +(DIEP(I-1)+DIEP(I)/2)*DIEP(I)/2/((DIEP(I)+DIEP(I-1))
-*     C                                                *DIEP(I))*T(I+1)
-          THOS = -1.0/8.0*T(I-1) + 3.0/4.0*T(I) + 3.0/8.0*T(I+1)
+        DCCE(IB-1) = 0
+        DO 20 I=IB,IE-1
+          THOS =DISE(I)*DISE(I+1)/(DIEP(I-1)*(DIEP(I-1)+DIEP(I)))*T(I-1)
+     C          +(DISE(I)+DIEP(I-1))*DISE(I-1)/(DIEP(I-1)*DIEP(I))*T(I)
+     C          +(DISE(I)+DIEP(I-1))*DISE(I)/
+     C                (DIEP(I)*(DIEP(I)+DIEP(I+1)))*T(I+1)
+          PRINT *, THOS
+*          THOS = -1.0/8.0*T(I-1) + 3.0/4.0*T(I) + 3.0/8.0*T(I+1)
           DCCE(I) = BETA*(ME(I)*THOS-ME(I)*T(I))
  20	    CONTINUE
+        DCCE(IE+1) = 0
       ENDIF
 *
       RETURN

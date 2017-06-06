@@ -30,11 +30,11 @@
       INTEGER ID,IB,IE
       INTEGER I
 *
-      DO 10 I=IB,IE
-        ACUE(I) = RHO*AREP(I)
-        ACUW(I) = -RHO*AREP(I-1)
+      DO 10 I=IB-1,IE
+        ACUW(I) = -RHO*AREP(I)
+        ACUE(I) = RHO*AREP(I+1)
         BC(I) = 0
- 10   CONTINUE    
+ 10	  CONTINUE
 *
       RETURN
       END
@@ -64,11 +64,11 @@
 *
 ***********************************************************************
 *
-      REAL ME(ID),UHE(ID),ACUW(ID),ACUE(ID),BC(ID),RHO
+      REAL ME(ID),UHE(ID),ACUW(ID),ACUE(ID),BC(ID)
       INTEGER IB,IE,ID,I
 *
-      DO 20 I=IB,IE
-        ME(I) = -ACUE(I)*UHE(I)
+      DO 20 I=IB-1,IE
+        ME(I) = ACUE(I)*UHE(I)+BC(I)
  20	  CONTINUE
 
       RETURN

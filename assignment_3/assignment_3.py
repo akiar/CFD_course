@@ -11,27 +11,24 @@ colours = ['k', 'b', 'y', 'g', 'm', 'c', 'r', 'k']
 
 def results_1d(question_num):
     # iteration variables
-    di = "025"
-    t_o = "100"
+    adv = "UDS"
     lin = "3"
-    con_vol = 40
     '''---------------------------------------------------------------------'''
 
     # Load outpy.txt, formatted output file from fortran assignment_2.prj
     output = Table.read("outpy.txt", format='ascii.commented_header',
                         guess=False)
+    con_vol = len(output['I'])-2
     path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_3\\{}".format(question_num)
-    file_name = "{}_TS-{}_CVL-{}_To-{}".format("Xpos",
-                                               (len(output['I'])-2)/con_vol - 1,
-                                               di, t_o)
-    data_name = "output_linearization_{}_TS_{}".format(lin,
-                                                       (len(output['I'])-2)/con_vol - 1)
+    file_name = "{}_CVL-{}_Advection-{}".format("Xpos", con_vol, adv)
+    data_name = "output_advection_{}_CV_{}".format(adv, con_vol)
+
     if not os.path.exists(path):
         print "New_path"
         os.makedirs(path)
     shutil.copy2('outpy.txt', path +"\\"+data_name+'_output.txt')
 
-    print "Number of TS: ", (len(output['I']) - 2)/con_vol-2  # -2 for IB-1 and IE+1
+    print "Number of CVs: ", con_vol  # -2 for IB-1 and IE+1
     print "max temp: ", max(output['T']), output['XP'][output['T']==max(output['T'])]
     print "temperature:"
     print output['T']

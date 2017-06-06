@@ -54,9 +54,9 @@
      C            - 0.5 * ME(I) * (1 - ALFAE(I))     ! Advection term  
           ASUM(I) = AW(I) + AE(I)                     ! Total of contact CVs
           AP(I) = ASUM(I) + VOLP(I)*RHO/DTIME - R(I)  ! Net on P, with Transient
-     C            + HCONV*ARO(I)/ CP
+     C            + HCONV*ARO(I)/CP
           B(I) = Q(I) + VOLP(I)*RHO*PHI(I)/DTIME      ! Fixed source with Transient
-     C           + HCONV*ARO(I)*TINF/CP 
+     C           + HCONV*ARO(I)*TINF/CP
    10 CONTINUE
       RETURN
       END

@@ -58,7 +58,7 @@
      C            + (1-OMEG)*(DEOLD(I)*(TOLD(I+1)-TOLD(I))    !Transient Term
      C                        -DEOLD(I-1)*(TOLD(I)-TOLD(I-1)))
      C            - DCCE(I) + DCCE(I-1)                       ! Deferred correction
-
+*
           RT(I) = - 4 * EMIS * ARO(I) * SBC *(T(I)**3)    !linearized source
      C            - HCONV * ARO(I)                        !convection
 *	                                                      !No trasient effect

@@ -2,8 +2,7 @@
 *
 ************************************************************************
 *
-      SUBROUTINE WEIGHT(ALFAE, ME,DE,IB,IE,ID,
-     C                  COND,RHO,CP)
+      SUBROUTINE WEIGHT(ALFAE, ME,DE,IB,IE,ID)
 *
 *     Subroutine to calculate the advection weighting factors
 *     for estimating fluxes through the east faces of
@@ -29,12 +28,12 @@
 ***********************************************************************
 *
       REAL ALFAE(ID)
-      REAL ME(ID),DE(ID),COND,RHO,CP
+      REAL ME(ID),DE(ID)
       INTEGER IB,IE,ID,IEM1,I
 *
-      ALFAE(IB-1)= 1 
-      DO 1 I=IB,IE-1
-        CALL PRFL(ALFAE(I),ME(I),DE(I),COND,RHO,CP)
+      ALFAE(IB-1)= 1
+      DO 1 I=IB,IE
+        CALL PRFL(ALFAE(I),ME(I),DE(I))
   1   CONTINUE
       ALFAE(IE+1)= -1
 *
@@ -43,8 +42,7 @@
 *
 ***********************************************************************
 *
-      SUBROUTINE PRFL(ALFA,M,D,
-     C                COND,RHO,CP)
+      SUBROUTINE PRFL(ALFA,M,D)
 *
 *     Subroutine to calculate the weighting factors alfa and beta
 *     at a point.
@@ -55,8 +53,17 @@
 *     D    diffusion coefficient for face at point; input
 *
 ************************************************************************
-      REAL ALFA,M,D,COND,RHO,CP
-      ALFA = COND/RHO/CP  !D/M
+      REAL ALFA,M,D
+*
+*     Check the mass flow rate for alpha assignment
+*     
+      IF (M > 0) THEN
+        ALFA = 1
+      ELSEIF (M < 0) THEN
+        ALFA = -1
+      ELSE
+        ALFA = 0
+      ENDIF
 *
       RETURN
       END

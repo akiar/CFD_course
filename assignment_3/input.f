@@ -40,7 +40,7 @@
      C                 T0,DTIME,KNTTM,KNTNL,CRIT,
      C                 LVLGEO,LVLCOF,HCONV,TINF,IDATI,
      C                 OMEG,
-     C                 U0,UHE0)
+     C                 U0,UHE0,ADVSCM)
 *
 *     Subroutine to read in input variable from a data file.
 *
@@ -69,16 +69,17 @@
       REAL DI,OMEG                                        !Time disc. method
       REAL RHO,COND,CP,VISC,EMIS,T0,DTIME,CRIT,HCONV,TINF
       REAL U,U0,UHE,UHE0
+      INTEGER ADVSCM
 *
       READ(IDATI,5000) IB,IE,IDTYP,DI
       READ(IDATI,5010) RHO,COND,CP,VISC,EMIS
       READ(IDATI,5020) T0,DTIME,KNTTM,KNTNL,CRIT
-      READ(IDATI,5030) LVLGEO,LVLCOF,HCONV,TINF,OMEG,U0,UHE0
+      READ(IDATI,5030) LVLGEO,LVLCOF,HCONV,TINF,OMEG,U0,UHE0,ADVSCM
 *
  5000 FORMAT(/I5/I5/I5/E12.5)
  5010 FORMAT(E12.5/E12.5/E12.5/E12.5/E12.5)
  5020 FORMAT(E12.5/E12.5/I5/I5/E12.5)
- 5030 FORMAT(I5/I5/E12.5/E12.5/E12.5/E12.5/E12.5)
+ 5030 FORMAT(I5/I5/E12.5/E12.5/E12.5/E12.5/E12.5/I5)
 *
       RETURN
       END
