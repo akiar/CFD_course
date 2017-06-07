@@ -134,8 +134,8 @@
 *
 *     --Compute advection correction terms
 *
-           CALL HOCONV(DCCE, ADVSCM,IB,IE,ID,DE,T,QT,RT,RHO,VOLP,
-     C                 ME,ALFAE,UHE,DIEP,DISE)
+           CALL HOCONV(DCCE, ADVSCM,IB,IE,ID,DE,T,QT,RT,RHO,
+     C                 ME,ALFAE,XP,XE)
            PRINT *, "HOCONV"
 *
 *     --Compute Sources and active coefficients

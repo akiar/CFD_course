@@ -51,7 +51,7 @@
           AW(I) = OMEG*DE(I-1)                        ! West  = East of previous CV
      C            + 0.5 * ME(I-1) * (1 + ALFAE(I-1))    ! Advection term
           AE(I) = OMEG*DE(I)                          ! East coefficient
-     C            - 0.5 * ME(I) * (1 - ALFAE(I))     ! Advection term  
+     C            - 0.5 * ME(I) * (1 - ALFAE(I))     ! Advection term
           ASUM(I) = AW(I) + AE(I)                     ! Total of contact CVs
           AP(I) = ASUM(I) + VOLP(I)*RHO/DTIME - R(I)  ! Net on P, with Transient
      C            + HCONV*ARO(I)/CP

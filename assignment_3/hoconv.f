@@ -3,7 +3,7 @@
 **********************************************************************
 *
       SUBROUTINE HOCONV(DCCE, ADVSCM,IB,IE,ID,DE,T,QT,RT,RHO,
-     C                  ME,ALFAE,DIEP,DISE)
+     C                  ME,ALFAE,XP,XE)
 *
 *     Routine to calculate deferred corrections on convection based
 *     on the selection of a higher order convection scheme.
@@ -13,7 +13,7 @@
 **********************************************************************
 *
       REAL DCCE(ID),DE(ID),T(ID),QT(ID),RT(ID),ME(ID),ALFAE(ID)
-      REAL THOS,RHO,DIEP(ID),BETA,DISE(ID)
+      REAL THOS,RHO,XP(ID),XE(ID),BETA,TE
       INTEGER ADVSCM,IB,IE,ID
 *
 *     -- SET BLENDING FACTOR
@@ -43,9 +43,9 @@
         PRINT *, "CDS"
         DCCE(IB-1) = 0
         DO 10 I=IB,IE
+          TE = (1+ALFAE(I))*0.5*T(I) + (1-ALFAE(I))*0.5*T(I+1)
           THOS = 0.5*(T(I)+T(I+1))
-          DCCE(I) = BETA*(ME(I)*THOS-ME(I)*T(I))
-*
+          DCCE(I) = BETA*(ME(I)*THOS-ME(I)*TE)
  10	    CONTINUE
         DCCE(IE+1) = 0
 *
@@ -55,14 +55,16 @@
 *
         PRINT *, "QUICK"
         DCCE(IB-1) = 0
-        DO 20 I=IB,IE-1
-          THOS =DISE(I)*DISE(I+1)/(DIEP(I-1)*(DIEP(I-1)+DIEP(I)))*T(I-1)
-     C          +(DISE(I)+DIEP(I-1))*DISE(I-1)/(DIEP(I-1)*DIEP(I))*T(I)
-     C          +(DISE(I)+DIEP(I-1))*DISE(I)/
-     C                (DIEP(I)*(DIEP(I)+DIEP(I+1)))*T(I+1)
-          PRINT *, THOS
-*          THOS = -1.0/8.0*T(I-1) + 3.0/4.0*T(I) + 3.0/8.0*T(I+1)
-          DCCE(I) = BETA*(ME(I)*THOS-ME(I)*T(I))
+        DO 20 I=IB,IE
+*          THOS = (XE(I)-XP(I))*(XE(I)-XP(I+1))/
+*     C             (XP(I-1)-XP(I))/(XP(I-1)-XP(I+1))*T(I-1)
+*     C          +(XE(I)-XP(I-1))*(XE(I)-XP(I+1))/
+*     C             (XP(I)-XP(I-1))/(XP(I)-XP(I+1))*T(I)
+*     C          +(XE(I)-XP(I-1))*(XE(I)-XP(I))/
+*     C             (XP(I)-XP(I-1))/(XP(I+1)-XP(I))*T(I+1)
+          THOS = -1.0/8.0*T(I-1) + 3.0/4.0*T(I) + 3.0/8.0*T(I+1)
+          TE = (1+ALFAE(I))*0.5*T(I) + (1-ALFAE(I))*0.5*T(I+1)
+          DCCE(I) = BETA*(ME(I)*THOS-ME(I)*TE)
  20	    CONTINUE
         DCCE(IE+1) = 0
       ENDIF

@@ -120,9 +120,3 @@ def final_temp():
     plt.show()
     plt.close()
     return
-    
-    
-    
-    
-    
-    
