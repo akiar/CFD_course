@@ -35,7 +35,7 @@
       REAL AP(ID),ASUM(ID),AW(ID),AE(ID),B(ID),   ! coefficient declaration
      C     DE(ID),Q(ID),R(ID),                    ! source term declaration
      C     PHI(ID),VOLP(ID),DTIME,                ! time variable declaration
-     C     RHO,CP,                                 ! properties declaration
+     C     RHO,CP,                                ! properties declaration
      C     ME(ID),ALFAE(ID),HCONV,ARO(ID),TINF    ! Advection properties
       INTEGER IB,IE,ID,   ! first, last interior indices, length of array
      C        I           ! loop integer
@@ -49,14 +49,13 @@
 *
       DO 10 I = IB,IE
           AW(I) = OMEG*DE(I-1)                        ! West  = East of previous CV
-     C            + 0.5 * ME(I-1) * (1 + ALFAE(I-1))    ! Advection term
+     C            + 0.5 * ME(I-1) * (1 + ALFAE(I-1))  ! Advection term
           AE(I) = OMEG*DE(I)                          ! East coefficient
-     C            - 0.5 * ME(I) * (1 - ALFAE(I))     ! Advection term
+     C            - 0.5 * ME(I) * (1 - ALFAE(I))      ! Advection term
           ASUM(I) = AW(I) + AE(I)                     ! Total of contact CVs
           AP(I) = ASUM(I) + VOLP(I)*RHO/DTIME - R(I)  ! Net on P, with Transient
-     C            + HCONV*ARO(I)/CP
           B(I) = Q(I) + VOLP(I)*RHO*PHI(I)/DTIME      ! Fixed source with Transient
-     C           + HCONV*ARO(I)*TINF/CP
    10 CONTINUE
+*
       RETURN
       END

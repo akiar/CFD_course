@@ -36,7 +36,7 @@
 *                         BP = HCONV*AREP(IB-1)*TINFC
 *
       ATW(IB-1) = 0
-      ATE(IB-1) = 0
+      ATE(IB-1) = 1
       ATP(IB-1) = 1
       BT(IB-1) = 0
 *
@@ -51,7 +51,7 @@
       ATW(IE+1) = 0
       ATE(IE+1) = 0
       ATP(IE+1) = 1
-      BT(IE+1) = 1
-*     
+      BT(IE+1) = 273.15
+*
       RETURN
       END

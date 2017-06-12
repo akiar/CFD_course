@@ -1,6 +1,6 @@
 *     This file contains 2 subroutines: COEFCN and MASFLX
 *
-************************************************************************
+************************************************************************************
 *
       SUBROUTINE COEFCN(ACUW,ACUE,BC, RHO,AREP,IB,IE,ID)
 *
@@ -20,7 +20,7 @@
 *
 *               ACUE*UHE(I)+ ACUW*UHE(I-1) + BC(I) = 0
 *
-***********************************************************************
+************************************************************************************
 *
 *     Calculate coefficients for mass equation 
 *     Equation of the form: ACUE(I)*UHE(I)+ACUW(I)*UHE(I-1)+BC(I)=0
@@ -30,16 +30,16 @@
       INTEGER ID,IB,IE
       INTEGER I
 *
-      DO 10 I=IB-1,IE
-        ACUW(I) = -RHO*AREP(I)
-        ACUE(I) = RHO*AREP(I+1)
+      DO 10 I=IB,IE
+        ACUE(I) = RHO*AREP(I)    
+        ACUW(I) = -RHO*AREP(I-1)
         BC(I) = 0
  10	  CONTINUE
 *
       RETURN
       END
 *
-************************************************************************
+************************************************************************************
 *
       SUBROUTINE MASFLX(ME, UHE,ACUW,ACUE,BC,IB,IE,ID)
 *
@@ -62,14 +62,15 @@
 *
 *            2) This subroutine must be preceded by a call to COEFCN.
 *
-***********************************************************************
+************************************************************************************
 *
       REAL ME(ID),UHE(ID),ACUW(ID),ACUE(ID),BC(ID)
       INTEGER IB,IE,ID,I
 *
-      DO 20 I=IB-1,IE
+      ME(IB-1) = -ACUW(IB)*UHE(IB-1)
+      DO 20 I=IB,IE
         ME(I) = ACUE(I)*UHE(I)+BC(I)
  20	  CONTINUE
-
+*
       RETURN
       END

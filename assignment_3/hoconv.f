@@ -1,8 +1,8 @@
 *
 *     file hoconv.f
-**********************************************************************
+************************************************************************************
 *
-      SUBROUTINE HOCONV(DCCE, ADVSCM,IB,IE,ID,DE,T,QT,RT,RHO,
+      SUBROUTINE HOCONV(DCCE, ADVSCM,IB,IE,ID,DE,T,RHO,
      C                  ME,ALFAE,XP,XE)
 *
 *     Routine to calculate deferred corrections on convection based
@@ -10,7 +10,7 @@
 *
 *     DCCE(ID)  Deferred Correction on Convection at the East face
 *
-**********************************************************************
+************************************************************************************
 *
       REAL DCCE(ID),DE(ID),T(ID),QT(ID),RT(ID),ME(ID),ALFAE(ID)
       REAL THOS,RHO,XP(ID),XE(ID),BETA,TE
@@ -42,12 +42,13 @@
 *
         PRINT *, "CDS"
         DCCE(IB-1) = 0
-        DO 10 I=IB,IE
-          TE = (1+ALFAE(I))*0.5*T(I) + (1-ALFAE(I))*0.5*T(I+1)
+        DO 10 I=IB,IE-1
           THOS = 0.5*(T(I)+T(I+1))
+          TE = T(I)*(1+ALFAE(I))/2 + T(I+1)*(1-ALFAE(I))/2
           DCCE(I) = BETA*(ME(I)*THOS-ME(I)*TE)
+          print *, I, dcce(i)
  10	    CONTINUE
-        DCCE(IE+1) = 0
+        DCCE(IE) = 0
 *
       ELSEIF(ADVSCM == 3) THEN
 *
@@ -55,18 +56,18 @@
 *
         PRINT *, "QUICK"
         DCCE(IB-1) = 0
-        DO 20 I=IB,IE
-*          THOS = (XE(I)-XP(I))*(XE(I)-XP(I+1))/
-*     C             (XP(I-1)-XP(I))/(XP(I-1)-XP(I+1))*T(I-1)
-*     C          +(XE(I)-XP(I-1))*(XE(I)-XP(I+1))/
-*     C             (XP(I)-XP(I-1))/(XP(I)-XP(I+1))*T(I)
-*     C          +(XE(I)-XP(I-1))*(XE(I)-XP(I))/
-*     C             (XP(I)-XP(I-1))/(XP(I+1)-XP(I))*T(I+1)
-          THOS = -1.0/8.0*T(I-1) + 3.0/4.0*T(I) + 3.0/8.0*T(I+1)
-          TE = (1+ALFAE(I))*0.5*T(I) + (1-ALFAE(I))*0.5*T(I+1)
+        DO 20 I=IB,IE-1
+          THOS = (XE(I)-XP(I))*(XE(I)-XP(I+1))/
+     C             (XP(I-1)-XP(I))/(XP(I-1)-XP(I+1))*T(I-1)
+     C          +(XE(I)-XP(I-1))*(XE(I)-XP(I+1))/
+     C             (XP(I)-XP(I-1))/(XP(I)-XP(I+1))*T(I)
+     C          +(XE(I)-XP(I-1))*(XE(I)-XP(I))/
+     C             (XP(I+1)-XP(I-1))/(XP(I+1)-XP(I))*T(I+1)
+          TE = T(I)*(1+ALFAE(I))/2 + T(I+1)*(1-ALFAE(I))/2
           DCCE(I) = BETA*(ME(I)*THOS-ME(I)*TE)
+          print *, I, dcce(i)
  20	    CONTINUE
-        DCCE(IE+1) = 0
+        DCCE(IE) = 0
       ENDIF
 *
       RETURN

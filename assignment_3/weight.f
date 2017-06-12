@@ -1,6 +1,6 @@
-*    Note this file contains 2 subroutines, WEIGHT and PRFL
 *
-************************************************************************
+*    Note this file contains 2 subroutines, WEIGHT and PRFL
+************************************************************************************
 *
       SUBROUTINE WEIGHT(ALFAE, ME,DE,IB,IE,ID)
 *
@@ -13,7 +13,7 @@
 *     REAL ME(ID)    normal mass flux for east face; input
 *     REAL DE(ID)    diffusion coefficient for east face; input
 *     INTEGER IB,IE  first and last interior indices in i; input
-*     INTEGER ID     array dimensions; input     
+*     INTEGER ID     array dimensions; input
 *
 *     Notes:
 *
@@ -25,14 +25,14 @@
 *        the loop to ensure that the appropriate conditions are
 *        carried into the domain.
 *
-***********************************************************************
+************************************************************************************
 *
       REAL ALFAE(ID)
       REAL ME(ID),DE(ID)
       INTEGER IB,IE,ID,IEM1,I
 *
-      ALFAE(IB-1)= 1
-      DO 1 I=IB,IE
+      ALFAE(IB)= -1
+      DO 1 I=IB+1,IE
         CALL PRFL(ALFAE(I),ME(I),DE(I))
   1   CONTINUE
       ALFAE(IE+1)= -1
@@ -40,7 +40,7 @@
       RETURN
       END
 *
-***********************************************************************
+************************************************************************************
 *
       SUBROUTINE PRFL(ALFA,M,D)
 *
@@ -52,7 +52,8 @@
 *     M    mass flux for face at point; input
 *     D    diffusion coefficient for face at point; input
 *
-************************************************************************
+************************************************************************************
+*
       REAL ALFA,M,D
 *
 *     Check the mass flow rate for alpha assignment

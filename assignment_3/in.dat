@@ -1,23 +1,23 @@
   in.dat
 00002          IB
-00011          IE
+00006          IE
 00001          IDTYP: 1=RECT, 2=2D, 3=AXISYM, 4=GRADED RECT
-+0.10000E+00   DI (m): length of control volumes.
-+1.00000E+00   RHO (kg/m^3): Material density.
-+1.00000E+00   COND (W/m K): Thermal conductivity
-+50.0000E+00   CP (J/kg K): specific heat
++1.00000E+00   DI (m): length of control volumes.
++1000.00E+00   RHO (kg/m^3): Material density.
++0.59000E+00   COND (W/m K): Thermal conductivity
++4189.00E+00   CP (J/kg K): specific heat
 +1.00000E-03   VISC (N s/m): viscosity
 +0.00000E+00   EMIS: emmisivity of surfaces (set to 0 for no radiation)
-+1.00000E+00   T0 : Initialized temperature
++273.150E+00   T0 : Initialized temperature
 1.000000E+10   DTIME (s) : Time step
 00001          KNTMM : Maximum number of time steps
 00100          KNTNL : Maximum number of non-linear iterations
 +1.00000E-05   CRIT : Convergence criteria for non-linearities
 00001          LVLGEO =1 OUTPUT GEOMETRY, = 0 NO GEOMETRY OUTPUT
 00001          LVLCOF=0 NONE,1 FINAL,2 BEFORE ELIM.,3 COEFF., 4 ALL
-0.000000E+00   HCONV[W/M**2-K]. Convective heat transfer coefficient.(1D)
-0.000000E+00   TINF. Ambient temperature.(1D)
-1.000000E+00   OMEG : time disc. method		
-1.000000E+00   U0 : Initial Flow Velocity
-1.000000E+00   UHE0 : Initial flow velocity at each CV
-00001	       ADVSCM : Advection scheme 1,2,3	
+10000.00E+00   HCONV[W/M**2-K]. Convective heat transfer coefficient.(1D)
++373.150E+00   TINF. Ambient temperature.(1D)
+1.000000E+00   OMEG : time disc. method
+-1.50000E+00   U0 : Initial Flow Velocity
+-1.50000E+00   UHE0 : Initial flow velocity at each CV
+00001	       ADVSCM : Advection scheme 1,2,3

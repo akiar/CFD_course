@@ -9,9 +9,9 @@ import shutil
 symbol = ['*', '+', '^', 's', 'o', '>', '<', '.']
 colours = ['k', 'b', 'y', 'g', 'm', 'c', 'r', 'k']
 
-def results_1d(question_num):
+def results_1d(question_num, adv, an):
     # iteration variables
-    adv = "UDS"
+#    adv = "QUICK"
     lin = "3"
     '''---------------------------------------------------------------------'''
 
@@ -19,17 +19,23 @@ def results_1d(question_num):
     output = Table.read("outpy.txt", format='ascii.commented_header',
                         guess=False)
     con_vol = len(output['I'])-2
-    path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_3\\{}".format(question_num)
+    path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_3\\{}\\".format(question_num)
+    if an=="rev":
+        analytic = Table.read(path+"analytic_rev.txt", format='ascii.commented_header',
+                              guess=False)
+    else:
+        analytic = Table.read(path+"analytic.txt", format='ascii.commented_header',
+                              guess=False)
     file_name = "{}_CVL-{}_Advection-{}".format("Xpos", con_vol, adv)
     data_name = "output_advection_{}_CV_{}".format(adv, con_vol)
 
     if not os.path.exists(path):
-        print "New_path"
+        print "New_paths"
         os.makedirs(path)
     shutil.copy2('outpy.txt', path +"\\"+data_name+'_output.txt')
 
+    print "------- ", adv, " -------"
     print "Number of CVs: ", con_vol  # -2 for IB-1 and IE+1
-    print "max temp: ", max(output['T']), output['XP'][output['T']==max(output['T'])]
     print "temperature:"
     print output['T']
     
@@ -38,14 +44,15 @@ def results_1d(question_num):
     ax1 = x_fig.add_subplot(111)
     #ax1.plot(output['XP'], output['T'])
     ax1.scatter(output['XP'], output['T'])
+    ax1.plot(analytic['XP'], analytic['T'])
 
     # Format figure
     ax1.set_xlabel("x [m]", fontweight='bold', fontsize=14)
     ax1.set_ylabel("T (x) [C]", fontweight='bold', fontsize=14)
     #ax.xaxis.set_major_locator(plt.MultipleLocator(1))
 
-    plt.ylim(min(output['T'])-0.01*min(output['T']),
-             max(output['T'])+0.01*max(output['T']))
+    plt.ylim(min(output['T']),#-0.01*min(output['T']),
+             max(analytic['T']))
     # plt.xlim(0, max(output['XP']))
 
     if not os.path.exists(path):
@@ -53,8 +60,6 @@ def results_1d(question_num):
         os.makedirs(path)
     pylab.savefig(os.path.join(path, file_name))
     plt.show()
-    
-    print "Center temp: ", output['T'][output['I']==1]
     
     return
 

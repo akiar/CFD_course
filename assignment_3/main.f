@@ -22,19 +22,22 @@
       REAL ATW(ID),ATE(ID),ATP(ID),BT(ID)
       REAL T(ID),TOLD(ID),DEOLD(ID)
 *
+
       INTEGER I,KNTIN,IE1
       INTEGER IDATI,IRSI,IDATO,IRSO,ITERMO
       INTEGER IB,IE,IDTYP,KNTTM
       INTEGER LVLGEO,LVLCOF,KNTOUT,KNTNL
       REAL DI,RHO,COND,CP,EMIS,VISC,T0,DTIME,CRIT
       REAL HCONV,TINF
+*
+      INTEGER ADVSCM                      ! Advection scheme
       REAL RSD(ID),AVRSD,RESIDUALS(ID)    !Residual variables
       REAL TEND(ID),ERROR(ID),SUMERR
       REAL U(ID),U0,UHE(ID),UHE0,P(ID),P0 !New initialization variables
       REAL ACUE(ID),ACUW(ID),BC(ID)       ! for flow field
-      INTEGER ADVSCM                      ! Advection scheme
       REAL DCCE(ID)                       ! deferred correction array
       REAL ME(ID),ALFAE(ID)               ! Advection properties
+*
 *============================
 *  Initialization and input
 *============================
@@ -134,13 +137,13 @@
 *
 *     --Compute advection correction terms
 *
-           CALL HOCONV(DCCE, ADVSCM,IB,IE,ID,DE,T,QT,RT,RHO,
+           CALL HOCONV(DCCE, ADVSCM,IB,IE,ID,DE,T,RHO,  
      C                 ME,ALFAE,XP,XE)
            PRINT *, "HOCONV"
 *
 *     --Compute Sources and active coefficients
 *
-           CALL SRCT(QT,RT, T,VOLP,ARO,HCONV,TINF,IB,IE,ID,
+           CALL SRCT(QT,RT, T,VOLP,ARO,HCONV/CP,TINF,IB,IE,ID,
      C               EMIS,
      C               OMEG,DEOLD,TOLD,
      C               DCCE)
