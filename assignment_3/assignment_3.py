@@ -7,7 +7,7 @@ import pylab
 import shutil
 
 symbol = ['*', '+', '^', 's', 'o', '>', '<', '.']
-colours = ['k', 'b', 'y', 'g', 'm', 'c', 'r', 'k']
+colours = ['k', 'r', 'y', 'g', 'm', 'c', 'r', 'k']
 
 def results_1d(question_num, adv, an):
     # iteration variables
@@ -63,40 +63,40 @@ def results_1d(question_num, adv, an):
     
     return
 
-def composite_plots(method):
+def composite_plots(problem, cv):
     '''Make composites of each mesh with analytic solution'''
-    path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_3\\results\\"
+    path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_3\\{}\\".format(problem)
 
     composite = plt.figure(figsize=(12,12))
     ax = composite.add_subplot(111)
-    num_ts = ["2", "4", "8", "16", "32"] 
-    analytic_start = Table.read(path + "analytic_start.txt",
+    cvs = cv
+    scheme = ["UDS", "CDS", "QUICK"] 
+    analytic = Table.read(path + "analytic_rev.txt",
                                 format="ascii.commented_header", guess=False)
-    analytic_end = Table.read(path + "analytic_end.txt",
-                              format="ascii.commented_header", guess=False)
 
-    ax.plot(analytic_end["XP"], analytic_end["T"], color='r',
-            label="End Analytic t*")
-    if method == "imp": 
-        ax.plot(analytic_start["XP"], analytic_start["T"], color='k',
-                label="Initialized Analytic")
+    ax.plot(analytic["XP"], analytic["T"], color='b',
+            label="Analytic")
 
-    for i in range(0, len(num_ts)):
-        results = Table.read(path + num_ts[i] + "_ts_final_"+method+".txt",
+    for i in range(0, len(scheme)):
+        results = Table.read(path + "output_advection_"+scheme[i]+"_CV_"+cvs+"_output.txt",
                              format='ascii.commented_header', guess=False)
-        legend = num_ts[i]+" Time steps"
+        legend = scheme[i]+" Scheme"
+        if scheme[i]=="CDS":
+            order=3
+        else:
+            order=i
         ax.scatter(results['XP'], results['T'], color=colours[i],
-                   marker=symbol[i], s=700/((i+1)*5), label=legend)
+                   marker=symbol[i], s=700/((i+1)*5), label=legend, zorder=order)
 
-    ax.legend(loc='upper right', fontsize=12, scatterpoints=1)
-    ax.set_xlabel('x*', fontweight='bold', fontsize=14)
-    ax.set_ylabel('T(x, t) [C]', fontweight='bold', fontsize=14)
+    ax.legend(loc='lower left', fontsize=12, scatterpoints=1)
+    ax.set_xlabel('x [m]', fontweight='bold', fontsize=14)
+    ax.set_ylabel('T(x) [K]', fontweight='bold', fontsize=14)
 
-    file_name = "composite_plot_{}".format(method)
+    file_name = "composite_plot_{}_{}_rev".format(problem, cvs)
     pylab.savefig(os.path.join(path, file_name))
     plt.show()
     plt.close()
-        
+
     return ()
     
 def final_temp():

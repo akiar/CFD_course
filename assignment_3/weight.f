@@ -31,11 +31,11 @@
       REAL ME(ID),DE(ID)
       INTEGER IB,IE,ID,IEM1,I
 *
-      ALFAE(IB)= -1
-      DO 1 I=IB+1,IE
+      ALFAE(IB-1)= 1      !Make sure physically correct
+      DO 1 I=IB,IE-1              ! All internal faces
         CALL PRFL(ALFAE(I),ME(I),DE(I))
   1   CONTINUE
-      ALFAE(IE+1)= -1
+      ALFAE(IE)= -1       !Make sure physically correct
 *
       RETURN
       END
@@ -58,11 +58,11 @@
 *
 *     Check the mass flow rate for alpha assignment
 *     
-      IF (M > 0) THEN
+      IF (M > 0) THEN     !Forward flow 
         ALFA = 1
-      ELSEIF (M < 0) THEN
+      ELSEIF (M < 0) THEN !Reversed Flow
         ALFA = -1
-      ELSE
+      ELSE                ! No flow
         ALFA = 0
       ENDIF
 *

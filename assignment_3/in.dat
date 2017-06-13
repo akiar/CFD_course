@@ -1,8 +1,8 @@
   in.dat
 00002          IB
-00006          IE
+00021          IE
 00001          IDTYP: 1=RECT, 2=2D, 3=AXISYM, 4=GRADED RECT
-+1.00000E+00   DI (m): length of control volumes.
++0.25000E+00   DI (m): length of control volumes.
 +1000.00E+00   RHO (kg/m^3): Material density.
 +0.59000E+00   COND (W/m K): Thermal conductivity
 +4189.00E+00   CP (J/kg K): specific heat
@@ -18,6 +18,6 @@
 10000.00E+00   HCONV[W/M**2-K]. Convective heat transfer coefficient.(1D)
 +373.150E+00   TINF. Ambient temperature.(1D)
 1.000000E+00   OMEG : time disc. method
--1.50000E+00   U0 : Initial Flow Velocity
--1.50000E+00   UHE0 : Initial flow velocity at each CV
-00001	       ADVSCM : Advection scheme 1,2,3
++1.50000E+00   U0 : Initial Flow Velocity
++1.50000E+00   UHE0 : Initial flow velocity at each CV
+00003	       ADVSCM : Advection scheme 1,2,3

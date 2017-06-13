@@ -30,7 +30,7 @@
       INTEGER ID,IB,IE
       INTEGER I
 *
-      DO 10 I=IB,IE
+      DO 10 I=IB,IE           ! All east faces
         ACUE(I) = RHO*AREP(I)    
         ACUW(I) = -RHO*AREP(I-1)
         BC(I) = 0
@@ -67,9 +67,9 @@
       REAL ME(ID),UHE(ID),ACUW(ID),ACUE(ID),BC(ID)
       INTEGER IB,IE,ID,I
 *
-      ME(IB-1) = -ACUW(IB)*UHE(IB-1)
-      DO 20 I=IB,IE
-        ME(I) = ACUE(I)*UHE(I)+BC(I)
+      ME(IB-1) = -ACUW(IB)*UHE(IB-1)      ! Coefficient not included in coefcn.f
+      DO 20 I=IB,IE                       ! All east faces
+        ME(I) = ACUE(I)*UHE(I)
  20	  CONTINUE
 *
       RETURN

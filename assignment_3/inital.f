@@ -29,7 +29,7 @@
 *
       DO 10 I=IB-1,IE+1
          T(I)= T0
-         U(I) = U0
+         U(I) = U0            !Initialize flow field
          UHE(I) = UHE0
          P(I) = P0
  10   CONTINUE
