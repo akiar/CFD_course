@@ -38,7 +38,7 @@
       ATW(IB-1) = 0
       ATE(IB-1) = 0
       ATP(IB-1) = 1       !Change based on direciton of flow
-      BT(IB-1) = 273.15
+      BT(IB-1) = 0
 *
 *     End Node + 1
 *      Node that has zero volume and only contains boundary information
@@ -48,10 +48,10 @@
 *     Robin:      AW = DE(IE), AE = 0,  AP = HCONV*AREP(IE) + DE(IE),
 *                         BP = HCONV*AREP(IE)*TINFC
 *
-      ATW(IE+1) = 1
+      ATW(IE+1) = 0
       ATE(IE+1) = 0
       ATP(IE+1) = 1       !Change based on direciton of flow
-      BT(IE+1) = 0
+      BT(IE+1) = 1
 *
       RETURN
       END

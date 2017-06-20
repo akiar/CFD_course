@@ -35,8 +35,10 @@
 *     Loop over all internal node faces and calculate the diffusion coefficient
 *      based on linear piecewise interpolation
 *
+      PRINT *, "DE"
       DO 10 I=IB-1,IE                         ! Loop over all internal node faces
           DE(I) = GAMA * AREP(I) / DIEP(I)    ! Calculate De at each node and assign
+          PRINT *, DE(I)
                                               ! to I location
    10 CONTINUE
 *

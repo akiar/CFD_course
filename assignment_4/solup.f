@@ -22,11 +22,11 @@
 *
 *********************************************************************
 *
+      INTEGER IB,IE,ID,M,E
       PARAMETER(M=240)
       REAL AUP(2,2,ID),AUW(2,2,ID),AUE(2,2,ID),BU(2,ID),P(ID),U(ID)
       REAL GLOBM(M,M),RHS(M),SOLN(M),WK4(M)
       INTEGER WK5(M)
-      INTEGER IB,IE,ID,M,E
 *
 *--Assemble global coefficient matrix using coefficient blocks
 *

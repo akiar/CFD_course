@@ -20,8 +20,17 @@
 *
 *******************************************************************
 *
-      REAL ...
-      INTEGER ...
+      REAL UHE(ID)
+      REAL U(ID),P(ID),DHUE(ID),DPDX(ID)
+      REAL RHO,DIEP(ID)
+      INTEGER IB,IE,ID,I
+*
+      PRINT *, "UHE"
+      DO 10 I=IB+1,IE-1
+        UHE(I) = (U(I)+U(I+1))/2 - DHUE(I)*((P(I+1)-P(I))/DIEP(I)
+     C                                    - 0.5*(DPDX(I)+DPDX(I+1)))
+        PRINT *,UHE(I)
+ 10	  CONTINUE     
 *
       RETURN
       END

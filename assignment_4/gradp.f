@@ -14,11 +14,17 @@
 *     IB,IE     first and last interior indices in i; input
 *     ID        array dimensions; input     
 *
-***********************************************************************
+************************************************************************
 *
-      REAL ...
-      INTEGER ...
+      REAL DPDX(ID),DIEP(ID),P(ID)
+      INTEGER IB,IE,ID
+*
+      PRINT *, "DPDX"
+      
+      DO 10 I=IB-1,IE
+        DPDX(I) = (P(I+1)-P(I))/DIEP(I)
+        PRINT *, DPDX(I)
+ 10	  CONTINUE
 *
       RETURN
       END
-

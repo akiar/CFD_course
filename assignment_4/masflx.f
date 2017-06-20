@@ -30,10 +30,12 @@
       INTEGER ID,IB,IE
       INTEGER I
 *
+      PRINT *, "ACUE ACUW BC"
       DO 10 I=IB,IE           ! All east faces
         ACUE(I) = RHO*AREP(I)    
         ACUW(I) = -RHO*AREP(I-1)
         BC(I) = 0
+        PRINT *, ACUE(I), ACUW(I), BC(I)
  10	  CONTINUE
 *
       RETURN
@@ -67,9 +69,12 @@
       REAL ME(ID),UHE(ID),ACUW(ID),ACUE(ID),BC(ID)
       INTEGER IB,IE,ID,I
 *
+      PRINT *, "ME"
       ME(IB-1) = -ACUW(IB)*UHE(IB-1)      ! Coefficient not included in coefcn.f
+      PRINT *, ME(IB-1)
       DO 20 I=IB,IE                       ! All east faces
         ME(I) = ACUE(I)*UHE(I)
+        PRINT *, ME(I)
  20	  CONTINUE
 *
       RETURN

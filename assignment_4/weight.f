@@ -31,11 +31,15 @@
       REAL ME(ID),DE(ID)
       INTEGER IB,IE,ID,IEM1,I
 *
+      PRINT *, "ALFAE"
       ALFAE(IB-1)= 1      !Make sure physically correct
+      PRINT *, ALFAE(IB-1)
       DO 1 I=IB,IE-1              ! All internal faces
         CALL PRFL(ALFAE(I),ME(I),DE(I))
+        PRINT *, ALFAE(I)
   1   CONTINUE
       ALFAE(IE)= -1       !Make sure physically correct
+      PRINT *, ALFAE(IE)
 *
       RETURN
       END
