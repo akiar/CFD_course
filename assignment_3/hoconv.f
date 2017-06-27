@@ -56,9 +56,10 @@
 *
 *     QUICK scheme
 *
-        PRINT *, "QUICK"
-        DCCE(IB-1) = 0                    !Set external face
-        DO 20 I=IB,IE-1                   ! ONly internal faces
+        IF (ME(I) > 0) THEN
+         PRINT *, "QUICK"
+         DCCE(IB-1) = 0                    !Set external face
+         DO 20 I=IB,IE-1                   ! ONly internal faces
           THOS = (XE(I)-XP(I))*(XE(I)-XP(I+1))/
      C             (XP(I-1)-XP(I))/(XP(I-1)-XP(I+1))*T(I-1)
      C          +(XE(I)-XP(I-1))*(XE(I)-XP(I+1))/
@@ -68,8 +69,24 @@
           TE = T(I)*(1+ALFAE(I))/2 + T(I+1)*(1-ALFAE(I))/2
           DCCE(I) = BETA*(ME(I)*THOS-ME(I)*TE)
           print *, I, dcce(i)             !Check values
- 20	    CONTINUE
-        DCCE(IE) = 0                      !Set external face
+ 20	     CONTINUE
+         DCCE(IE) = 0                      !Set external face
+        ELSE 
+         PRINT *, "QUICK"
+         DCCE(IB) = 0                    !Set external face
+         DO 30 I=IB+1,IE                   ! ONly internal faces
+          THOS = (XE(I)-XP(I))*(XE(I)-XP(I+1))/
+     C             (XP(I-1)-XP(I))/(XP(I-1)-XP(I+1))*T(I-1)
+     C          +(XE(I)-XP(I-1))*(XE(I)-XP(I+1))/
+     C             (XP(I)-XP(I-1))/(XP(I)-XP(I+1))*T(I)
+     C          +(XE(I)-XP(I-1))*(XE(I)-XP(I))/
+     C             (XP(I+1)-XP(I-1))/(XP(I+1)-XP(I))*T(I+1)
+          TE = T(I)*(1+ALFAE(I))/2 + T(I+1)*(1-ALFAE(I))/2
+          DCCE(I) = BETA*(ME(I)*THOS-ME(I)*TE)
+          print *, I, dcce(i)             !Check values
+ 30	     CONTINUE
+         DCCE(IE+1) = 0                      !Set external face
+        ENDIF 
       ENDIF
 *
       RETURN
