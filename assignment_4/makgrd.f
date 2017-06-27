@@ -34,8 +34,8 @@
 *     
 *  Statement functions for Y(X) and Z(X) profile of the duct
 *
-      Y(X)= 0.5 !original 0.0125
-      Z(X)= 0.5
+      Y(X)= 0.02+0.01*COS(2*PI*X/1) !Q3
+      Z(X)= 0.01
 *
 *-----------------------------------------------------------------------
 *  No changes required below this line

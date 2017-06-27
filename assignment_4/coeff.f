@@ -95,14 +95,14 @@
       INTEGER IB,IE,ID
       INTEGER I
 *
-      PRINT *, "AUW(2,2,I) AUE(2,2,I) AUP(2,2,I) BU(2,I)"
+*      PRINT *, "AUW(2,2,I) AUE(2,2,I) AUP(2,2,I) BU(2,I)"
       DO 10 I=IB,IE
-        AW(2,2,I) = DE(I-1) + 0.5*(ME(I-1) + ALFAE(I-1)*ME(I-1))
-        AE(2,2,I) = DE(I) - 0.5*(ME(I) - ALFAE(I)*ME(I))
+        AW(2,2,I) = DE(I-1) + 0.5*(ME(I-1) + ALFAE(I-1)*ABS(ME(I-1)))
+        AE(2,2,I) = DE(I) - 0.5*(ME(I) - ALFAE(I)*ABS(ME(I)))
         ASUM = AW(2,2,I) + AE(2,2,I)
-        AP(2,2,I) = ASUM +RHO*VOLP(I)/DTIME - R(I)
+        AP(2,2,I) = ASUM + RHO*VOLP(I)/DTIME - R(I)
         B(2,I) = RHO*VOLP(I)*PHI(I)/DTIME + Q(I)
-        PRINT *, AW(2,2,I), AE(2,2,I), AP(2,2,I), B(2,I)
+*        PRINT *, I,AW(2,2,I), AE(2,2,I), AP(2,2,I), B(2,I)
  10	  CONTINUE
 *
       RETURN

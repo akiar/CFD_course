@@ -61,6 +61,9 @@
         "filename":".\\null.f",
         "enabled":"1"
       },{
+        "filename":".\\out.dat",
+        "enabled":"1"
+      },{
         "filename":".\\out1d.f",
         "enabled":"1"
       },{
@@ -68,6 +71,9 @@
         "enabled":"1"
       },{
         "filename":".\\outpy.f",
+        "enabled":"1"
+      },{
+        "filename":".\\outpym.f",
         "enabled":"1"
       },{
         "filename":".\\resid.f",

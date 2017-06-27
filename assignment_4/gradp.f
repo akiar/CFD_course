@@ -19,11 +19,11 @@
       REAL DPDX(ID),DIEP(ID),P(ID)
       INTEGER IB,IE,ID
 *
-      PRINT *, "DPDX"
+*      PRINT *, "DPDX"
       
       DO 10 I=IB-1,IE
         DPDX(I) = (P(I+1)-P(I))/DIEP(I)
-        PRINT *, DPDX(I)
+*        PRINT *, I,DPDX(I)
  10	  CONTINUE
 *
       RETURN

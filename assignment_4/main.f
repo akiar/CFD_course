@@ -40,7 +40,7 @@
       REAL QU(ID),RU(ID)
       REAL AUP(2,2,ID),AUW(2,2,ID),AUE(2,2,ID),BU(2,ID)
       REAL DHUE(ID),UOLD(ID)
-      REAL RESIDC,RESIDP
+      REAL RESIDC,RESIDP,CD
       INTEGER PRBLMT
 *
 *==============================
@@ -105,19 +105,18 @@
 *     INITIALIZE T AND DE fields
 *
       CALL INITAL(T,U,UHE,P, T0,U0,UHE0,P0,IRSI,IB,IE,ID)
-      CALL DIFPHI(DE, VISC,AREP,DIEP,IB,IE,ID)                ! CHANGE VISC TO COND/CP
-      PRINT *, "INITAL"
-*
+*     
       KNTOUT = 0
-      CALL OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP,KNTOUT)
-*
-*     PRINT INITIALIZED FIELD
-*
-      IF (PRBLMT==1) THEN
+      IF (PROBLMT == 1) THEN
+        CALL DIFPHI(DE, COND/CP,AREP,DIEP,IB,IE,ID)                ! CHANGE VISC TO COND/CP
+        CALL OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP,KNTOUT)
         CALL OUT1D(T  ,'T(init)',IDATO,IB-1,IE+1,1,ID)
-      ELSEIF (PRBLMT==2) THEN
+      ELSE
+        CALL DIFPHI(DE, VISC,AREP,DIEP,IB,IE,ID)
+        CALL OUTPYM(ID,IB,IE,DE,ATW,ATP,BT,P,U,XP,KNTOUT)
         CALL OUT1D(P  ,'P(init)',IDATO,IB-1,IE+1,1,ID)
       ENDIF
+      PRINT *, "INITAL"
 *
 *==============================
 *     SOLVER
@@ -225,8 +224,12 @@
 *
 *************************************************
 *
-             CALL NULLVB(BU, IB,IE,1,ID)                         ! TD: N=2 CORRECT? NULL VECTOR
-             CALL NULLVB(BU, IB,IE,2,ID)                         ! TD: N=2 CORRECT? NULL VECTOR
+             PRINT *, "RADIUS"
+             DO 11 I=IB-1,IE+1
+               PRINT *, I,YNE(I)
+ 11	         CONTINUE
+             CALL NULLVB(BU, IB,IE,1,ID)                             ! TD: N=2 CORRECT? NULL VECTOR
+             CALL NULLVB(BU, IB,IE,2,ID)                             ! TD: N=2 CORRECT? NULL VECTOR
 *
 *     --   COMPUTE PRESSURE GRADIENTS, UHAT & MASS FLUX
 *
@@ -248,21 +251,21 @@
 *
 *     ---    COMPUTE ADVECTION CORRECTIONS
 *
-             CALL HOCONV(DCCE, ADVSCM,IB,IE,ID,DE,U,RHO,
-     C                   ME,ALFAE,XP,XE)
+             CALL HOCONV(DCCE, ADVSCM,IB,IE,ID,U,RHO,
+     C                   ME,ALFAE,XP,XE)  
              PRINT *, "HOCONV"
 *
 *     ---    COMPUTE SOURCE TERMS & ACTIVE COEFFICIENTS
 *
              CALL SRCU(QU,RU, U,UHE,RHO,VISC,XE,ARO,AREP,IB,IE,ID,
-     C                 YNE,ZNE,UOLD)
+     C                 YNE,ZNE,DCCE)
              PRINT *, "SRCU"
 *
              CALL SRCUP(AUP,AUW,AUE,BU, DIEP,VOLP,IB,IE,ID)
              PRINT *, "SRCUP"
 *
              CALL COEFFM(AUP,AUW,AUE,BU,
-     C                   ME,DE,QU,RU,P,VOLP,ALFAE,RHO,DTIME,
+     C                   ME,DE,QU,RU,UOLD,VOLP,ALFAE,RHO,DTIME,
      C                   IB,IE,ID)
              PRINT *, "COEFFM"
 *
@@ -285,12 +288,12 @@
              CALL BNDCU(AUP,AUW,AUE,BU, IB,IE,ID)
              PRINT *, "BNDCU"
 *
-             CALL BNDCP(AUP,AUW,AUE,BU, P,DIEP,IB,IE,ID)
+             CALL BNDCP(AUP,AUW,AUE,BU, P,XP,IB,IE,ID,DE)   !DIEP TO XP
              PRINT *, "BNDCP"
 *
 *     ---    CHECK COMPUTED, ACTIVE COEFFICIENTS (LVLCOF=1 to check)
 *
-             IF (LVLCOF .GE. 1) THEN                                      
+             IF (LVLCOF .GE. 1) THEN
                CALL OUTCON(AUW , ' AUW    ',IDATO,IB-1, IE+1,1,ID)
                CALL OUTCON(AUP , ' AUP    ',IDATO,IB-1, IE+1,1,ID)
                CALL OUTCON(AUE , ' AUE    ',IDATO,IB-1, IE+1,1,ID)
@@ -302,10 +305,10 @@
              IF (M > 1) THEN
                CALL RESIDM(AVRSD,RSD, P,U,1,AUP,AUW,AUE,BU,IB,IE,ID)
                RESIDC = AVRSD
-               PRINT *, "AVERAGE CONSERVATION RES. ",M," = ",RESIDC       ! Print avg. residual
+               PRINT *, "AVERAGE CONSERVATION RES. ",M," = ",RESIDC           ! Print avg. residual
                CALL RESIDM(AVRSD,RSD, P,U,2,AUP,AUW,AUE,BU,IB,IE,ID)
                RESIDP = AVERSD
-               PRINT *, "AVERAGE MOMENTUM RES. ",M," = ",RESIDP           ! Print avg. residual
+               PRINT *, "AVERAGE MOMENTUM RES. ",M," = ",RESIDP               ! Print avg. residual
 *
 *     ----     CHECK CONVERGENCE
 *
@@ -324,9 +327,9 @@
 * 3000        CONTINUE
              CALL SOLUP(AUP,AUW,AUE,BU,P,U,IB,IE,ID)                      ! Updates P & U fields
              PRINT *, "SOLUP"
-             DO 10 I=IB-1,IE+1
-               PRINT *, "I: ",I," P: ",P(I)," U: ",U(I)
- 10          CONTINUE
+*             DO 10 I=IB-1,IE+1
+*               PRINT *, "I: ",I," P: ",P(I)," U: ",U(I)
+* 10          CONTINUE
 *
 *     ---    PRINT SOLUTION
 *
@@ -353,8 +356,10 @@
          IF (PRBLMT==1) THEN
            CALL OUTPY(ID,IB,IE,DE,ATW,ATP,BT,T,XP,KNTOUT,"T")
          ELSE
-           CALL OUTPY(ID,IB,IE,DE,ATW,ATP,BT,P,XP,KNTOUT,"P") ! TD: CHECK IF P IS CORRECT OR U
+           CALL OUTPYM(ID,IB,IE,DE,ATW,ATP,BT,P,U,XP,KNTOUT,"P") ! TD: CHECK IF P IS CORRECT OR U
          ENDIF
+         CD = (P(IB-1) - P(IE+1))/0.5/RHO/(U(IB-1)**2)
+         PRINT *, "CD: ",CD
 *
 *     -  SAVE TO UNFORMATTED FILE
 *

@@ -16,7 +16,7 @@ def results_1d(question_num, adv):
     '''---------------------------------------------------------------------'''
 
     # Load outpy.txt, formatted output file from fortran assignment_4.prj
-    output = Table.read("outpy.txt", format='ascii.commented_header',
+    output = Table.read("outpym.txt", format='ascii.commented_header',
                         guess=False)
     con_vol = len(output['I'])-2
     path = "C:\\Users\\Alex\\Documents\\GitHub\\CFD_course\\assignment_4\\{}\\".format(question_num)
@@ -26,18 +26,19 @@ def results_1d(question_num, adv):
     #else:
     #    analytic = Table.read(path+"analytic.txt", format='ascii.commented_header',
     #                          guess=False)
-    file_name = "{}_CVL-{}_Advection-{}".format("Xpos", con_vol, adv)
+    file_name = "{}_CVL-{}_Advection-{}".format("PDist", con_vol, adv)
     data_name = "output_advection_{}_CV_{}".format(adv, con_vol)
 
     if not os.path.exists(path):
         print "New_paths"
         os.makedirs(path)
-    shutil.copy2('outpy.txt', path +"\\"+data_name+'_output.txt')
+    shutil.copy2('outpym.txt', path +"\\"+data_name+'_output.txt')
 
     print "------- ", adv, " -------"
     print "Number of CVs: ", con_vol  # -2 for IB-1 and IE+1
-    print "temperature:"
-    print output['P']
+    print "pressure, velocity"
+    print output['P'], output['U']
+    print "max velocity: ", max(output['U'])
     
     # Plot temperature as a function of x position along the bar
     x_fig = plt.figure(figsize=(10,10))
@@ -48,13 +49,29 @@ def results_1d(question_num, adv):
 
     # Format figure
     ax1.set_xlabel("x [m]", fontweight='bold', fontsize=14)
-    ax1.set_ylabel("P (x) [C]", fontweight='bold', fontsize=14)
+    ax1.set_ylabel("P (x) [Pa]", fontweight='bold', fontsize=14)
     #ax.xaxis.set_major_locator(plt.MultipleLocator(1))
 
-    plt.ylim(min(output['P']),#-0.01*min(output['T']),
-             max(output['P']))
+    plt.ylim(min(output["P"]),#-0.01*min(output['T']),
+             max(output["P"]))
     # plt.xlim(0, max(output['XP']))
 
+    if not os.path.exists(path):
+        print "New_path"
+        os.makedirs(path)
+    pylab.savefig(os.path.join(path, file_name))
+    plt.show()
+    
+    u_fig = plt.figure(figsize=(10,10))
+    ax2 = u_fig.add_subplot(111)
+    ax2.scatter(output['XP'], output['U'])
+    # Format figure
+    ax2.set_xlabel("x [m]", fontweight='bold', fontsize=14)
+    ax2.set_ylabel("U (x) [m/s]", fontweight='bold', fontsize=14)
+    plt.ylim(min(output['U']),
+             max(output['U']))
+
+    file_name = "{}_CVL-{}_Advection-{}".format("UDist", con_vol, adv)
     if not os.path.exists(path):
         print "New_path"
         os.makedirs(path)

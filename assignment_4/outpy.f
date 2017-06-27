@@ -27,7 +27,7 @@
 *     Write necessary output to outpy.txt
 *
       IF (KNTOUT==0) THEN
-          WRITE(IDATOP,*)'# I XP ',TITLE,' DE ATW ATP BT' ! Print headeR    
+          WRITE(IDATOP,*)'# I XP P DE ATW ATP BT' ! Print headeR    
       ELSE
           DO 20 I=IB-1,IE+1                       ! Loop over all control volumes
               WRITE(IDATOP,7010) I,XP(I),T(I),DE(I),ATW(I),ATP(I),BT(I)   !print information

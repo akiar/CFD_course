@@ -19,7 +19,7 @@
 *
       REAL AUP(2,2,ID),AUE(2,2,ID),AUW(2,2,ID),BU(2,ID)
       INTEGER IB,IE,ID
-      PRINT *, "AUW(1,1) AUW(1,1) AUW(1,1) AUW(1,1) BU(1)" 
+      PRINT *, "AUW(2,2) AUP(2,2) AUE(2,2) BU(2)" 
 *
 *     BEGINNING NODE
 *
@@ -28,11 +28,14 @@
 *     Robin:      AW = 0, AE = DE(IB-1), AP = HCONV*AREP(IB-1) + DE(IB-1),
 *                         BP = HCONV*AREP(IB-1)*TINFC
 *
-      AUW(1,2,IB-1) = 0
-      AUP(1,2,IB-1) = 1
-      AUE(1,2,IB-1) = 1
-      BU(2,IB-1) = 0
-      PRINT *, AUW(1,2,IB-1), AUP(1,2,IB-1), AUE(1,2,IB-1), BU(2,IB-1)
+      AUW(2,2,IB-1) = 0
+      AUP(2,2,IB-1) = 1
+      AUE(2,2,IB-1) = 0
+      BU(2,IB-1) = 2 !10         !Q3: 2
+      PRINT *,IB-1,AUW(2,2,IB-1),AUP(2,2,IB-1),AUE(2,2,IB-1), BU(2,IB-1)
+      AUW(2,1,IB-1) = 0
+      AUP(2,1,IB-1) = 0
+      AUE(2,1,IB-1) = 0
 *
 *     END NODE
 *
@@ -45,7 +48,10 @@
       AUP(2,2,IE+1) = 1
       AUE(2,2,IE+1) = 0
       BU(2,IE+1) = 0
-      PRINT *, AUW(2,2,IE+1), AUP(2,2,IE+1), AUE(2,2,IE+1), BU(2,IE+1)
+      PRINT *,IE+1,AUW(2,2,IE+1),AUP(2,2,IE+1),AUE(2,2,IE+1), BU(2,IE+1)
+      AUW(2,1,IE+1) = 0
+      AUP(2,1,IE+1) = 0
+      AUE(2,1,IE+1) = 0
 *
       RETURN
       END

@@ -116,6 +116,10 @@ CFLAGS=$(SPECIALFLAGS) $(OPTFLAGS) $(PRJ_CFLAGS)
 	@echo Compiling .\outpy.f
 	@$(FC) -c -o "build\outpy.o" $(FFLAGS) ".\outpy.f"
 
+"build\outpym.o": ".\outpym.f"
+	@echo Compiling .\outpym.f
+	@$(FC) -c -o "build\outpym.o" $(FFLAGS) ".\outpym.f"
+
 "build\resid.o": ".\resid.f"
 	@echo Compiling .\resid.f
 	@$(FC) -c -o "build\resid.o" $(FFLAGS) ".\resid.f"
@@ -193,6 +197,8 @@ clean: .SYMBOLIC
 	@$(RM) "build\outcon.o"
 	@echo Deleting build\outpy.o and related files
 	@$(RM) "build\outpy.o"
+	@echo Deleting build\outpym.o and related files
+	@$(RM) "build\outpym.o"
 	@echo Deleting build\resid.o and related files
 	@$(RM) "build\resid.o"
 	@echo Deleting build\solup.o and related files
@@ -212,9 +218,9 @@ clean: .SYMBOLIC
 	@echo Deleting target.exe
 	@$(RM) "target.exe"
 
-"target.exe":  "build\adcont.o" "build\assign.o" "build\bndcp.o" "build\bndct.o" "build\bndcu.o" "build\coeff.o" "build\dhat.o" "build\difphi.o" "build\globm.o" "build\gradp.o" "build\grdgeo.o" "build\hoconv.o" "build\inital.o" "build\input.o" "build\lud.o" "build\main.o" "build\makgrd.o" "build\masflx.o" "build\null.o" "build\out1d.o" "build\outcon.o" "build\outpy.o" "build\resid.o" "build\solup.o" "build\srct.o" "build\srcu.o" "build\srcup.o" "build\tdma.o" "build\uhat.o" "build\weight.o" "build\assignment_4.prj.target"
+"target.exe":  "build\adcont.o" "build\assign.o" "build\bndcp.o" "build\bndct.o" "build\bndcu.o" "build\coeff.o" "build\dhat.o" "build\difphi.o" "build\globm.o" "build\gradp.o" "build\grdgeo.o" "build\hoconv.o" "build\inital.o" "build\input.o" "build\lud.o" "build\main.o" "build\makgrd.o" "build\masflx.o" "build\null.o" "build\out1d.o" "build\outcon.o" "build\outpy.o" "build\outpym.o" "build\resid.o" "build\solup.o" "build\srct.o" "build\srcu.o" "build\srcup.o" "build\tdma.o" "build\uhat.o" "build\weight.o" "build\assignment_4.prj.target"
 	@echo Generating target.exe
-	@$(FC) -o "target.exe" -static "build\adcont.o" "build\assign.o" "build\bndcp.o" "build\bndct.o" "build\bndcu.o" "build\coeff.o" "build\dhat.o" "build\difphi.o" "build\globm.o" "build\gradp.o" "build\grdgeo.o" "build\hoconv.o" "build\inital.o" "build\input.o" "build\lud.o" "build\main.o" "build\makgrd.o" "build\masflx.o" "build\null.o" "build\out1d.o" "build\outcon.o" "build\outpy.o" "build\resid.o" "build\solup.o" "build\srct.o" "build\srcu.o" "build\srcup.o" "build\tdma.o" "build\uhat.o" "build\weight.o" $(LDIR) $(PRJ_LFLAGS)
+	@$(FC) -o "target.exe" -static "build\adcont.o" "build\assign.o" "build\bndcp.o" "build\bndct.o" "build\bndcu.o" "build\coeff.o" "build\dhat.o" "build\difphi.o" "build\globm.o" "build\gradp.o" "build\grdgeo.o" "build\hoconv.o" "build\inital.o" "build\input.o" "build\lud.o" "build\main.o" "build\makgrd.o" "build\masflx.o" "build\null.o" "build\out1d.o" "build\outcon.o" "build\outpy.o" "build\outpym.o" "build\resid.o" "build\solup.o" "build\srct.o" "build\srcu.o" "build\srcup.o" "build\tdma.o" "build\uhat.o" "build\weight.o" $(LDIR) $(PRJ_LFLAGS)
 
 all: "target.exe" .SYMBOLIC
 

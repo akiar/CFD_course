@@ -32,7 +32,7 @@
         DCCE(IB-1) = 0    ! Set beginning and end conditions
         DCCE(IE+1) = 0
         DO 5 I=IB-1,IE+1
-         PRINT *, DCCE(I)
+         PRINT *, I,DCCE(I)
  5      CONTINUE   
         PRINT *, "UDS"
 *

@@ -21,12 +21,12 @@
       INTEGER IB,IE,ID
       INTEGER I
 *
-      PRINT *, "AUP(2,1,I) AUW(2,1,I) AUE(2,1,I)"
+*      PRINT *, "AUP(2,1,I) AUW(2,1,I) AUE(2,1,I)"
       DO 10 I=IB,IE
         AUP(2,1,I) = 0.5*VOLP(I)*(1/DIEP(I-1)-1/DIEP(I))
         AUW(2,1,I) = 0.5*VOLP(I)/DIEP(I-1)
         AUE(2,1,I) = -0.5*VOLP(I)/DIEP(I)
-        PRINT *, I,":",AUP(2,1,I), AUW(2,1,I), AUE(2,1,I)
+*        PRINT *, I,":",AUP(2,1,I), AUW(2,1,I), AUE(2,1,I)
  10   CONTINUE
 *
       RETURN

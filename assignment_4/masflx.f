@@ -35,7 +35,7 @@
         ACUE(I) = RHO*AREP(I)    
         ACUW(I) = -RHO*AREP(I-1)
         BC(I) = 0
-        PRINT *, ACUE(I), ACUW(I), BC(I)
+*        PRINT *, I,ACUE(I), ACUW(I), BC(I)
  10	  CONTINUE
 *
       RETURN
@@ -71,10 +71,10 @@
 *
       PRINT *, "ME"
       ME(IB-1) = -ACUW(IB)*UHE(IB-1)      ! Coefficient not included in coefcn.f
-      PRINT *, ME(IB-1)
+      PRINT *, IB-1,ME(IB-1)
       DO 20 I=IB,IE                       ! All east faces
         ME(I) = ACUE(I)*UHE(I)
-        PRINT *, ME(I)
+*        PRINT *, I,ME(I)
  20	  CONTINUE
 *
       RETURN
