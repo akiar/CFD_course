@@ -1,0 +1,27 @@
+00002          IB
+00041          IE
+00002          JB
+00041          JE
++0.01000E+00   GRDX (m)  dimension of domain in 'x' direction
++0.10000E+00   GRDY (m)  dimension of domain in 'y' direction
++1.16140E+00   RHO (kg/m^3)
++0.02630E+00   COND (W/m K)
++1.00700E+03   CP (J/kg K)
++1.85000E-05   MU (visc) (N s/m)
++0.00333E+00   BETA (K^-1) Expansion coefficient
++293.150E+00   T0 (C)
++0.00000E+00   U0 (m/s) 
++0.00000E+00   V0 (m/s) 
++101.325E+03   P0 (Pa)
+00000          IRSTRT = 0 SET TO CONSTANTS, = 1 READ FROM restart.dat
++0.00000E+00   ITIME (s) Initial real time
++0.05000E+00   DTIME (s) Time step
+00005          PFTIME Frequency of printed output
+00200          KNTTM  Number of time steps- or outer iterations
+00001          KNTUVP Max inner iterations, (set < 10 for no res.)
++1.00000E-06   CRIT   Stopping criterion for inner loop
+00001          LVLGEO =1 OUTPUT GEOMETRY, = 0 NO GEOMETRY OUTPUT
+00000          LVLCOF=0 NONE,1 FINAL,2 BEFORE ELIM.,3 COEFF., 4 ALL
+00000          LVLMGD 0 NONE, 1 END, 2 ITER., 3 COARSE GRID, 4 COEFF.
+00002          ADVSCM  =1 UDS, =2 QUICK, =3 CDS
+00001          ISOTHM  =0 isothermal, =1 solve energy eqn.
