@@ -2,7 +2,7 @@
 00041          IE
 00002          JB
 00041          JE
-+0.01000E+00   GRDX (m)  dimension of domain in 'x' direction
++0.00500E+00   GRDX (m)  dimension of domain in 'x' direction
 +0.10000E+00   GRDY (m)  dimension of domain in 'y' direction
 +1.16140E+00   RHO (kg/m^3)
 +0.02630E+00   COND (W/m K)
